@@ -9,12 +9,11 @@ class Play extends Phaser.Scene {
     }
     
     create() {
-        
         // set up cursor keys
         cursors = this.input.keyboard.createCursorKeys();
 
         // Add Bus
-        this.bus = new Bus(this, 220, 560, 'bus').setOrigin(0,0);;
+        this.bus = new Bus(this, 220, 560, 'bus').setOrigin(0,0);
     }
 
     update(){
