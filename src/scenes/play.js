@@ -5,7 +5,7 @@ class Play extends Phaser.Scene {
 
     preload(){ 
         // Add sprites
-        this.load.image('bus', './assets/bus.png');
+        this.load.image('bus', './assets/BUSsprite.png');
     }
     
     create() {
@@ -15,9 +15,19 @@ class Play extends Phaser.Scene {
         // Add Bus
         this.bus = new Bus(this, 220, 560, 'bus').setOrigin(0,0);
         this.spawner = new Spawner(this);
+
+        // Adding side hitboxes
+        this.leftHitbox = this.physics.add.sprite(this.bus.x + 40,this.bus.y, 'bus').setOrigin(0,0);
+        this.rightHitbox = this.physics.add.sprite(this.bus.x - 40,this.bus.y, 'bus').setOrigin(0,0);
+        this.leftHitbox.alpha = 0;
+        this.rightHitbox.alpha = 0;
     }
 
     update(){
+        // Move hitboxes with bus
+        this.leftHitbox.x = this.bus.x + 40;
+        this.rightHitbox.x = this.bus.x - 40;
+        
         //console.log("In update");
         this.bus.update();
         this.spawner.update();
