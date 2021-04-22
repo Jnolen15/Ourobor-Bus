@@ -34,12 +34,12 @@ class Spawner {
             let typeRoll = Phaser.Math.Between(1, 2);
             if (typeRoll == 1) {                                            // (if spawning) 50% chance to spawn obstacle 
                 // | spawn obstacle
-                this.obstacle = new Obstacle(this.scene, xPos, 0, 'bus');
+                this.obstacle = new Obstacle(this.scene, xPos, 0, 'testObstacle');
                 scene.physics.add.overlap(bus, this.obstacle);
             }
             else if (typeRoll == 2) {                                       // (if spawning) 50% chance to spawn pedestrian
                 // | spawn pedestrian                                     
-                this.obstacle = new Obstacle(this.scene, xPos, 0, 'bus'); // FIXME (no pedestrian prefab)
+                this.obstacle = new Obstacle(this.scene, xPos, 0, 'testObstacle'); // FIXME (no pedestrian prefab)
                 scene.physics.add.overlap(bus, this.obstacle);
             }
         }

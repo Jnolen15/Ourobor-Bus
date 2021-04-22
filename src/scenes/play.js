@@ -7,6 +7,7 @@ class Play extends Phaser.Scene {
         // Add sprites
         this.load.image('bus', './assets/BUSsprite.png');
         this.load.image('street', './assets/street_background.png');
+        this.load.image('testObstacle', './assets/testObstacle.png');
     }
     
     create() {
@@ -29,7 +30,7 @@ class Play extends Phaser.Scene {
         this.rightHitbox.alpha = 0;
 
         // obstacel test
-        this.obstacle = new Obstacle(this, 220, 0, 'bus').setOrigin(0,0);
+        this.obstacle = new Obstacle(this, 220, 0, 'testObstacle').setOrigin(0,0);
     
         // var collider = this.physics.add.overlap(this.bus, this.obstacel);
     }
