@@ -20,7 +20,12 @@ class Play extends Phaser.Scene {
         this.bus = new Bus(this, 220, 560, 'bus').setOrigin(0,0);
 
         // Add Spawner
-        this.spawner = new Spawner(this);
+        this.spawner = new Spawner(this, this.bus);
+        
+        // this.physics.add.overlap(this.bus, this.spawner.obstacle);
+        // this.physics.add.overlap(this.bus, this.spawner.spawn2);
+        // this.physics.add.overlap(this.bus, this.spawner.spawn3);
+        // this.physics.add.overlap(this.bus, this.spawner.spawn4);
 
         // Adding side hitboxes
         this.leftHitbox = this.physics.add.sprite(this.bus.x + 40,this.bus.y, 'bus').setOrigin(0,0);
@@ -29,10 +34,15 @@ class Play extends Phaser.Scene {
         this.rightHitbox.alpha = 0;
 
         // obstacel test
-        this.obstacel = new Obstacle(this, 220, 0, 'bus').setOrigin(0,0);
+        this.obstacle = new Obstacle(this, 220, 0, 'bus').setOrigin(0,0);
+    
+        // var collider = this.physics.add.overlap(this.bus, this.obstacel);
     }
 
     update(){
+        // console.log(this.spawner.obstacle1);
+        console.log("collider: " + this.bus.body.touching.none);
+
         // Move street
         this.street.tilePositionY -= 10;
         
