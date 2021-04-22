@@ -21,11 +21,6 @@ class Play extends Phaser.Scene {
 
         // Add Spawner
         this.spawner = new Spawner(this, this.bus);
-        
-        // this.physics.add.overlap(this.bus, this.spawner.obstacle);
-        // this.physics.add.overlap(this.bus, this.spawner.spawn2);
-        // this.physics.add.overlap(this.bus, this.spawner.spawn3);
-        // this.physics.add.overlap(this.bus, this.spawner.spawn4);
 
         // Adding side hitboxes
         this.leftHitbox = this.physics.add.sprite(this.bus.x + 40,this.bus.y, 'bus').setOrigin(0,0);
