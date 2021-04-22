@@ -47,7 +47,6 @@ class Play extends Phaser.Scene {
         
         //console.log("In update");
         this.bus.update();
-        this.spawner.update();
     }
 
 }

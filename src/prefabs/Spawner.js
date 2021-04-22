@@ -12,11 +12,11 @@ class Spawner {
         let timerConfig = {
             delay: 3000,                // milliseconds
             callback: () => {
-                this.diceRoll(this.spawn1, scene, bus);
-                this.diceRoll(this.spawn2, scene, bus);
-                this.diceRoll(this.spawn3, scene, bus);
-                this.diceRoll(this.spawn4, scene, bus);
-                this.diceRoll(this.spawn5, scene, bus);
+                this.randomSpawn(this.spawn1, scene, bus);
+                this.randomSpawn(this.spawn2, scene, bus);
+                this.randomSpawn(this.spawn3, scene, bus);
+                this.randomSpawn(this.spawn4, scene, bus);
+                this.randomSpawn(this.spawn5, scene, bus);
                 // console.log("-----------");
             },
             callbackScope: this,
@@ -27,32 +27,19 @@ class Spawner {
         console.log("bus speed: " + bus.moveSpeed);
     }
 
-    update() {
-        
-    }
-
-    diceRoll(xPos, scene, bus) {
+    randomSpawn(xPos, scene, bus) {
         let spawnRoll = Phaser.Math.Between(1, 10);
-        if (spawnRoll <= 6) {
-            // | don't spawn anything
-            // console.log("spawning nothing at " + xPos);
-        }
-        else {
-            // | spawn something
+        if (spawnRoll <= 4) {                                               // 40% chance to spawn something (60% chance to spawn nothing)
+            // | (if yes) spawn something                                             
             let typeRoll = Phaser.Math.Between(1, 2);
-            
-            if (typeRoll == 1) {
+            if (typeRoll == 1) {                                            // (if spawning) 50% chance to spawn obstacle 
                 // | spawn obstacle
-                // console.log("spawning obstacle at " + xPos);
                 this.obstacle = new Obstacle(this.scene, xPos, 0, 'bus');
-                // console.log("bus speed: " + bus.moveSpeed);
-                
                 scene.physics.add.overlap(bus, this.obstacle);
             }
-            else if (typeRoll == 2) {
-                // | spawn pedestrian
-                // console.log("spawning pedestrian at " + xPos);
-                this.obstacle = new Obstacle(this.scene, xPos, 0, 'bus');
+            else if (typeRoll == 2) {                                       // (if spawning) 50% chance to spawn pedestrian
+                // | spawn pedestrian                                     
+                this.obstacle = new Obstacle(this.scene, xPos, 0, 'bus'); // FIXME (no pedestrian prefab)
                 scene.physics.add.overlap(bus, this.obstacle);
             }
         }
