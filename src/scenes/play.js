@@ -32,13 +32,11 @@ class Play extends Phaser.Scene {
 
         // obstacel test
         this.obstacle = new Obstacle(this, 220, 0, 'testObstacle').setOrigin(0,0);
-    
-        // var collider = this.physics.add.overlap(this.bus, this.obstacel);
     }
 
     update(){
-        // console.log(this.spawner.obstacle1);
-        // console.log("collider: " + this.bus.body.touching.none);
+        console.log(this.spawner.obstacle1);
+        console.log("collider: " + this.bus.body.touching.Obstacle);
 
         // Move street
         this.street.tilePositionY -= 10;

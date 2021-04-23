@@ -59,14 +59,17 @@ class Spawner {
                 break;
             case 'ped1':
                 // | spawn a single pedestrian
-                let pedestrian = new Obstacle(this.scene, xPos, 0, 'testObstacle1');        // FIXME (no pedestrian prefab)
+                let pedestrian = new Pedestrian(this.scene, xPos, 0, 'testObstacle1');
                 this.scene.physics.add.overlap(this.bus, pedestrian);
                 break;
             case 'ped3':
                 // | spawn a column of 3 pedestrians
-                let ped1 = new Obstacle(this.scene, xPos, this.yPos, 'testObstacle1');      // FIXME (no pedestrian prefab)
-                let ped2 = new Obstacle(this.scene, xPos, this.yPos-80, 'testObstacle1');   // FIXME (no pedestrian prefab)
-                let ped3 = new Obstacle(this.scene, xPos, this.yPos-160, 'testObstacle1');  // FIXME (no pedestrian prefab)
+                let ped1 = new Pedestrian(this.scene, xPos, this.yPos, 'testObstacle1');
+                let ped2 = new Pedestrian(this.scene, xPos, this.yPos-80, 'testObstacle1');
+                let ped3 = new Pedestrian(this.scene, xPos, this.yPos-160, 'testObstacle1');
+                this.scene.physics.add.overlap(this.bus, ped1);
+                this.scene.physics.add.overlap(this.bus, ped2);
+                this.scene.physics.add.overlap(this.bus, ped3);
                 break;
         }
     }
