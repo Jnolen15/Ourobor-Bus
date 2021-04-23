@@ -8,6 +8,7 @@ class Play extends Phaser.Scene {
         this.load.image('bus', './assets/BUSsprite.png');
         this.load.image('street', './assets/street_background.png');
         this.load.image('testObstacle', './assets/testObstacle.png');
+        this.load.image('testObstacle1', './assets/testObstacle1.png');
     }
     
     create() {
@@ -37,7 +38,7 @@ class Play extends Phaser.Scene {
 
     update(){
         // console.log(this.spawner.obstacle1);
-        console.log("collider: " + this.bus.body.touching.none);
+        // console.log("collider: " + this.bus.body.touching.none);
 
         // Move street
         this.street.tilePositionY -= 10;

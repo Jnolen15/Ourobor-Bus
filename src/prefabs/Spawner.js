@@ -2,46 +2,72 @@ class Spawner {
     constructor(scene, bus){
         scene.add.existing(this);
         this.scene = scene;
+        this.bus = bus;
+        // | how high objects spawn on the screen
+        this.yPos = 0;
         // | placement of spawners by x position (pixels);
-        this.spawn1 = 80;
-        this.spawn2 = 160;
-        this.spawn3 = 240;
-        this.spawn4 = 320;
-        this.spawn5 = 400;
+        this.xPos1 = 80;
+        this.xPos2 = 160;
+        this.xPos3 = 240;
+        this.xPos4 = 320;
+        this.xPos5 = 400;
+        // | list of all possible spawn patterns
+        let pat1 = { c1:'none', c2:'obst', c3:'none', c4:'obst', c5:'ped3'}
+        let pat2 = { c1:'none', c2:'obst', c3:'ped3', c4:'obst', c5:'ped3'}
+        let pat3 = { c1:'obst', c2:'ped1', c3:'none', c4:'ped1', c5:'obst'}
+        this.patternList = [pat1, pat2, pat3];
         // | spawn timer setup
         let timerConfig = {
-            delay: 3000,                // milliseconds
+            delay: 3000, // milliseconds
             callback: () => {
-                this.randomSpawn(this.spawn1, scene, bus);
-                this.randomSpawn(this.spawn2, scene, bus);
-                this.randomSpawn(this.spawn3, scene, bus);
-                this.randomSpawn(this.spawn4, scene, bus);
-                this.randomSpawn(this.spawn5, scene, bus);
-                // console.log("-----------");
+                this.fullRowSpawn();
             },
             callbackScope: this,
             loop: true
         }
         this.spawnerTimer = scene.time.addEvent(timerConfig);
-        console.log("bus: " + bus);
         console.log("bus speed: " + bus.moveSpeed);
     }
+    
+    fullRowSpawn() {
+        let columnKeys = this.pickPattern();
+        this.columnSpawn(columnKeys.c1, this.xPos1);
+        this.columnSpawn(columnKeys.c2, this.xPos2);
+        this.columnSpawn(columnKeys.c3, this.xPos3);
+        this.columnSpawn(columnKeys.c4, this.xPos4);
+        this.columnSpawn(columnKeys.c5, this.xPos5);
+    }
 
-    randomSpawn(xPos, scene, bus) {
-        let spawnRoll = Phaser.Math.Between(1, 10);
-        if (spawnRoll <= 4) {                                               // 40% chance to spawn something (60% chance to spawn nothing)
-            // | (if yes) spawn something                                             
-            let typeRoll = Phaser.Math.Between(1, 2);
-            if (typeRoll == 1) {                                            // (if spawning) 50% chance to spawn obstacle 
+    pickPattern(preselectedNum) {
+        if (preselectedNum == undefined) {
+            let random = Phaser.Math.Between(0, this.patternList.length - 1);
+            return this.patternList[random];
+        } else {
+            return this.patternList[preselectedNum];
+        }
+    }
+
+    columnSpawn(key, xPos) {
+        switch(key) {
+            case 'none':
+                // | do nothing
+                break;
+            case 'obst':
                 // | spawn obstacle
-                this.obstacle = new Obstacle(this.scene, xPos, 0, 'testObstacle');
-                scene.physics.add.overlap(bus, this.obstacle);
-            }
-            else if (typeRoll == 2) {                                       // (if spawning) 50% chance to spawn pedestrian
-                // | spawn pedestrian                                     
-                this.obstacle = new Obstacle(this.scene, xPos, 0, 'testObstacle'); // FIXME (no pedestrian prefab)
-                scene.physics.add.overlap(bus, this.obstacle);
-            }
+                let obstacle = new Obstacle(this.scene, xPos, 0, 'testObstacle');
+                this.scene.physics.add.overlap(this.bus, obstacle);
+                break;
+            case 'ped1':
+                // | spawn a single pedestrian
+                let pedestrian = new Obstacle(this.scene, xPos, 0, 'testObstacle1');        // FIXME (no pedestrian prefab)
+                this.scene.physics.add.overlap(this.bus, pedestrian);
+                break;
+            case 'ped3':
+                // | spawn a column of 3 pedestrians
+                let ped1 = new Obstacle(this.scene, xPos, this.yPos, 'testObstacle1');      // FIXME (no pedestrian prefab)
+                let ped2 = new Obstacle(this.scene, xPos, this.yPos-80, 'testObstacle1');   // FIXME (no pedestrian prefab)
+                let ped3 = new Obstacle(this.scene, xPos, this.yPos-160, 'testObstacle1');  // FIXME (no pedestrian prefab)
+                break;
         }
     }
 }
