@@ -1,8 +1,10 @@
 class Spawner {
-    constructor(scene, bus){
+    constructor(scene, bus, busLeft, busRight){
         scene.add.existing(this);
         this.scene = scene;
         this.bus = bus;
+        this.busLeft = busLeft;
+        this.busRight = busRight;
         // | how high objects spawn on the screen
         this.yPos = 0;
         // | placement of spawners by x position (pixels);
@@ -55,22 +57,44 @@ class Spawner {
             case 'obst':
                 // | spawn obstacle
                 let obstacle = new Obstacle(this.scene, xPos, 0, 'testObstacle');
-                this.scene.physics.add.overlap(this.bus, obstacle);
+                this.setObsCollision(this.bus, obstacle);
                 break;
             case 'ped1':
                 // | spawn a single pedestrian
                 let pedestrian = new Pedestrian(this.scene, xPos, 0, 'testObstacle1');
-                this.scene.physics.add.overlap(this.bus, pedestrian);
+                this.setPedCollision(this.bus, this.busLeft, this.busRight, pedestrian);
                 break;
             case 'ped3':
                 // | spawn a column of 3 pedestrians
                 let ped1 = new Pedestrian(this.scene, xPos, this.yPos, 'testObstacle1');
                 let ped2 = new Pedestrian(this.scene, xPos, this.yPos-80, 'testObstacle1');
                 let ped3 = new Pedestrian(this.scene, xPos, this.yPos-160, 'testObstacle1');
-                this.scene.physics.add.overlap(this.bus, ped1);
-                this.scene.physics.add.overlap(this.bus, ped2);
-                this.scene.physics.add.overlap(this.bus, ped3);
+                this.setPedCollision(this.bus, this.busLeft, this.busRight, ped1);
+                this.setPedCollision(this.bus, this.busLeft, this.busRight, ped2);
+                this.setPedCollision(this.bus, this.busLeft, this.busRight, ped3);
                 break;
         }
+    }
+
+    setObsCollision(bus, obstacle){
+        this.scene.physics.add.overlap(bus, obstacle, function(bus, obstacle) {
+            console.log("obstacle hit!!");
+            obstacle.destroy();
+        });
+    }
+
+    setPedCollision(bus, busLeft, busRight, pedestrian){
+        this.scene.physics.add.overlap(bus, pedestrian, function(bus, pedestrian) {
+            console.log("pedestrian hit!!");
+            pedestrian.destroy();
+        });
+        this.scene.physics.add.overlap(busLeft, pedestrian, function(busLeft, pedestrian) {
+            console.log("pedestrian picked up!!");
+            pedestrian.destroy();
+        });
+        this.scene.physics.add.overlap(busRight, pedestrian, function(busRight, pedestrian) {
+            console.log("pedestrian picked up!!");
+            pedestrian.destroy();
+        });
     }
 }

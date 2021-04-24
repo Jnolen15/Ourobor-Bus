@@ -1,6 +1,8 @@
 class Play extends Phaser.Scene {
     constructor() {
         super('playScene');
+
+        this.gameover = false;
     }
 
     preload(){ 
@@ -21,22 +23,19 @@ class Play extends Phaser.Scene {
         // Add Bus
         this.bus = new Bus(this, 220, 560, 'bus').setOrigin(0,0);
 
-        // Add Spawner
-        this.spawner = new Spawner(this, this.bus);
-
         // Adding side hitboxes
-        this.leftHitbox = this.physics.add.sprite(this.bus.x + 40,this.bus.y, 'bus').setOrigin(0,0);
-        this.rightHitbox = this.physics.add.sprite(this.bus.x - 40,this.bus.y, 'bus').setOrigin(0,0);
+        this.leftHitbox = this.physics.add.sprite(this.bus.x - 40,this.bus.y, 'bus').setOrigin(0,0);
+        this.rightHitbox = this.physics.add.sprite(this.bus.x + 40,this.bus.y, 'bus').setOrigin(0,0);
         this.leftHitbox.alpha = 0;
         this.rightHitbox.alpha = 0;
 
-        // obstacel test
-        this.obstacle = new Obstacle(this, 220, 0, 'testObstacle').setOrigin(0,0);
+        // Add Spawner
+        this.spawner = new Spawner(this, this.bus, this.leftHitbox, this.rightHitbox);
     }
 
     update(){
-        console.log(this.spawner.obstacle1);
-        console.log("collider: " + this.bus.body.touching.Obstacle);
+        //console.log(this.spawner.obstacle1);
+        //console.log("collider: " + this.bus.body.touching.none);
 
         // Move street
         this.street.tilePositionY -= 10;
@@ -48,5 +47,4 @@ class Play extends Phaser.Scene {
         //console.log("In update");
         this.bus.update();
     }
-
 }
