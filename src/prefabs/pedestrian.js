@@ -8,7 +8,8 @@ class Pedestrian extends Phaser.Physics.Arcade.Sprite {
         scene.physics.add.existing(this);
         
         // Obstacle properties
-        this.moveSpeed = 150;
+        this.score = 1;
+        this.moveSpeed = 350;
         this.body.velocity.y += this.moveSpeed;
     } 
 

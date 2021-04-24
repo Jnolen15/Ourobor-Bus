@@ -38,7 +38,7 @@ class Play extends Phaser.Scene {
         //console.log("collider: " + this.bus.body.touching.none);
 
         // Move street
-        this.street.tilePositionY -= 10;
+        this.street.tilePositionY -= 6;
         
         // Move hitboxes with bus
         this.leftHitbox.x = this.bus.x + 40;
