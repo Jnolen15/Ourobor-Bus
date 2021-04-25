@@ -2,7 +2,7 @@ class Play extends Phaser.Scene {
     constructor() {
         super('playScene');
 
-        this.gameover = false;
+        this.didEndGame = false;
     }
 
     preload(){ 
@@ -49,20 +49,47 @@ class Play extends Phaser.Scene {
     }
 
     update(){
-        //console.log(this.spawner.obstacle1);
-        //console.log("collider: " + this.bus.body.touching.none);
+        // End game check
+        if(gameOver){
+            this.gameisover();
+        }
 
         // Move street
-        this.street.tilePositionY -= 6;
+        if(!gameOver)
+            this.street.tilePositionY -= 6;
         
         // Move hitboxes with bus
         this.leftHitbox.x = this.bus.x + 40;
         this.rightHitbox.x = this.bus.x - 40;
         
         // Update Bus
-        this.bus.update();
+        if(!gameOver)
+            this.bus.update();
 
         // Update score
-        this.scoreLeft.text = score + "$";
+        if(!gameOver)
+            this.scoreLeft.text = score + "$";
+    }
+
+    gameisover(){
+        if(!this.didEndGame){
+            this.didEndGame = true;
+
+            // Display End
+            let endConfig = {
+                fontFamily: 'Courier',
+                fontSize: '28px',
+                backgroundColor: '#F3B141',
+                color: '#843605',
+                align: 'right',
+                padding: {
+                    top: 5,
+                    bottom: 5,
+                },
+            }
+            
+            this.add.text(game.config.width / 2, game.config.height / 2, 'YOU CRASHED!', endConfig).setOrigin(0.5);
+            this.add.text(game.config.width / 2, game.config.height / 2 + 64, 'CASH MADE:' + score + "$", endConfig).setOrigin(0.5);
+        }
     }
 }

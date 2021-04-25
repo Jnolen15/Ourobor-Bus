@@ -23,7 +23,8 @@ class Spawner {
         let timerConfig = {
             delay: 3000, // milliseconds
             callback: () => {
-                this.fullRowSpawn();
+                if(!gameOver)
+                    this.fullRowSpawn();
             },
             callbackScope: this,
             loop: true
@@ -80,6 +81,7 @@ class Spawner {
     setObsCollision(bus, obstacle){
         this.scene.physics.add.overlap(bus, obstacle, function(bus, obstacle) {
             console.log("obstacle hit!!");
+            gameOver = true;
             obstacle.destroy();
         });
     }
