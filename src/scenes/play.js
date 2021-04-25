@@ -47,6 +47,9 @@ class Play extends Phaser.Scene {
         }
         this.scoreLeft = this.add.text(10, 10, score + "$", scoreConfig);
 
+        // Add extra keys
+        this.keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
+
     }
 
     update(){
@@ -79,6 +82,15 @@ class Play extends Phaser.Scene {
             }
             this.cameras.main.shake(100, 0.01);
         }
+
+         // check key input for restart
+         if (gameOver && Phaser.Input.Keyboard.JustDown(this.keyR)){
+            score = 0;
+            distance = 0;
+            gameOver = false;
+            this.didEndGame = false;
+            this.scene.restart();
+        }
     }
 
     gameisover(){
@@ -101,6 +113,7 @@ class Play extends Phaser.Scene {
             this.add.text(game.config.width / 2, game.config.height / 2, 'YOU CRASHED!', endConfig).setOrigin(0.5);
             this.add.text(game.config.width / 2, game.config.height / 2 + 64, 'CASH MADE: ' + score + "$", endConfig).setOrigin(0.5);
             this.add.text(game.config.width / 2, game.config.height / 2 + 128, 'DISTANCE TRAVELED: ' + distance + " FEET", endConfig).setOrigin(0.5);
+            this.add.text(game.config.width / 2, game.config.height / 2 + 192, 'R TO RESTART', endConfig).setOrigin(0.5);
         }
     }
 }
