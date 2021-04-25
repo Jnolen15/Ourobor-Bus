@@ -69,6 +69,7 @@ class Play extends Phaser.Scene {
         // Update score
         if(!gameOver)
             this.scoreLeft.text = score + "$";
+            distance++;
     }
 
     gameisover(){
@@ -89,7 +90,8 @@ class Play extends Phaser.Scene {
             }
             
             this.add.text(game.config.width / 2, game.config.height / 2, 'YOU CRASHED!', endConfig).setOrigin(0.5);
-            this.add.text(game.config.width / 2, game.config.height / 2 + 64, 'CASH MADE:' + score + "$", endConfig).setOrigin(0.5);
+            this.add.text(game.config.width / 2, game.config.height / 2 + 64, 'CASH MADE: ' + score + "$", endConfig).setOrigin(0.5);
+            this.add.text(game.config.width / 2, game.config.height / 2 + 64, 'AND TRAVELED: ' + distance + " FEET", endConfig).setOrigin(0.5);
         }
     }
 }
