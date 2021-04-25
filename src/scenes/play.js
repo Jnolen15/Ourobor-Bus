@@ -46,6 +46,7 @@ class Play extends Phaser.Scene {
             fixedWidth: 100
         }
         this.scoreLeft = this.add.text(10, 10, score + "$", scoreConfig);
+
     }
 
     update(){
@@ -70,6 +71,14 @@ class Play extends Phaser.Scene {
         if(!gameOver)
             this.scoreLeft.text = score + "$";
             distance++;
+
+        // Shake screen if bus hits something
+        if(!this.bus.body.touching.none){
+            if(gameOver){
+                this.cameras.main.shake(500, 0.05);
+            }
+            this.cameras.main.shake(100, 0.01);
+        }
     }
 
     gameisover(){
