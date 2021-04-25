@@ -20,3 +20,4 @@ let game = new Phaser.Game(config);
 
 //define globals
 let cursors;
+let score = 0;

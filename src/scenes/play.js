@@ -31,6 +31,21 @@ class Play extends Phaser.Scene {
 
         // Add Spawner
         this.spawner = new Spawner(this, this.bus, this.leftHitbox, this.rightHitbox);
+
+        // display score
+        let scoreConfig = {
+            fontFamily: 'Courier',
+            fontSize: '28px',
+            backgroundColor: '#F3B141',
+            color: '#843605',
+            align: 'right',
+            padding: {
+                top: 5,
+                bottom: 5,
+            },
+            fixedWidth: 100
+        }
+        this.scoreLeft = this.add.text(10, 10, score + "$", scoreConfig);
     }
 
     update(){
@@ -44,7 +59,10 @@ class Play extends Phaser.Scene {
         this.leftHitbox.x = this.bus.x + 40;
         this.rightHitbox.x = this.bus.x - 40;
         
-        //console.log("In update");
+        // Update Bus
         this.bus.update();
+
+        // Update score
+        this.scoreLeft.text = score + "$";
     }
 }
