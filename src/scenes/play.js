@@ -43,9 +43,10 @@ class Play extends Phaser.Scene {
                 top: 5,
                 bottom: 5,
             },
-            fixedWidth: 100
+            fixedWidth: 150
         }
         this.scoreLeft = this.add.text(10, 10, score + "$", scoreConfig);
+        this.scoreRight = this.add.text(320, 10, distance + "ft.", scoreConfig);
 
         // Add extra keys
         this.keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
@@ -71,9 +72,11 @@ class Play extends Phaser.Scene {
             this.bus.update();
 
         // Update score
-        if(!gameOver)
+        if(!gameOver){
             this.scoreLeft.text = score + "$";
+            this.scoreRight.text = distance + "ft.";
             distance++;
+        }
 
         // Shake screen if bus hits something
         if(!this.bus.body.touching.none){
