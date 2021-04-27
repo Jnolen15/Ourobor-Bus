@@ -3,10 +3,13 @@ class Play extends Phaser.Scene {
         super('playScene');
 
         this.didEndGame = false;
+        this.lastScore = 0;
     }
 
     preload(){ 
         // Add sprites
+        this.load.image('blood', './assets/blood.png');
+        this.load.image('money', './assets/money.png');
         this.load.image('bus', './assets/BUSsprite.png');
         this.load.image('street', './assets/street_background.png');
         this.load.image('testObstacle', './assets/testObstacle.png');
@@ -53,6 +56,36 @@ class Play extends Phaser.Scene {
 
         // Add extra keys
         this.keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
+
+        // Particles
+        let bloodparticleConfig = {
+            x: 400,
+            y: 300,
+            blendmode: 'ADD',
+            speed: {min: 20, max: 100},
+            scale: {start: 1, end: 0},
+            rotate: {start: 360, end: 0},
+            gravityY: 300,
+            on: false,
+        }
+
+        this.bloodParticles = this.add.particles('blood');
+        this.bloodemitter = this.bloodParticles.createEmitter(bloodparticleConfig);
+
+        // Particles
+        let moneyparticleConfig = {
+            x: 400,
+            y: 300,
+            blendmode: 'ADD',
+            speed: {min: 20, max: 100},
+            scale: {start: 1, end: 0},
+            rotate: {start: 360, end: 0},
+            gravityY: 300,
+            on: false,
+        }
+
+        this.moneyParticles = this.add.particles('money');
+        this.moneyemitter = this.moneyParticles.createEmitter(moneyparticleConfig);
 
     }
 
@@ -101,7 +134,18 @@ class Play extends Phaser.Scene {
             if(gameOver){
                 this.cameras.main.shake(500, 0.05);
             }
-            this.cameras.main.shake(100, 0.01);
+            else{
+                this.bloodParticles.emitParticleAt(this.bus.x + 20, this.bus.y, 50);
+                this.cameras.main.shake(100, 0.01);
+                this.lastScore = score;
+            }
+        }
+
+        // Money particles if score increase
+        if(score > this.lastScore){
+            this.moneyParticles.emitParticleAt(this.bus.x + 50, this.bus.y, 5);
+            this.moneyParticles.emitParticleAt(this.bus.x - 10, this.bus.y, 5);
+            this.lastScore = score;
         }
 
          // check key input for restart
@@ -109,6 +153,7 @@ class Play extends Phaser.Scene {
             score = 0;
             distance = 0;
             gameOver = false;
+            this.lastScore = 0;
             this.didEndGame = false;
             this.scene.restart();
         }
