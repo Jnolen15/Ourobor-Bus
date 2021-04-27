@@ -11,11 +11,28 @@ class Play extends Phaser.Scene {
         this.load.image('blood', './assets/blood.png');
         this.load.image('money', './assets/money.png');
         this.load.image('bus', './assets/BUSsprite.png');
-        this.load.image('street', './assets/street_background.png');
+        // Street background
+        this.load.image('street', './assets/street_background_5lane.png');
+        // Earth Obstacles
+        this.load.image('car1', './assets/carsprite_1.png');
+        this.load.image('car2', './assets/carsprite_2.png');
+        this.load.image('car3', './assets/carsprite_3.png');
+        // Earth Pedestrians
+        this.load.image('ped1', './assets/pedestrian_1.png');
+        this.load.image('ped2', './assets/pedestrian_2.png');
+        this.load.image('ped3', './assets/pedestrian_3.png');
+        this.load.image('rped1', './assets/richpedestrian_1.png');
+        // Extra
         this.load.image('testObstacle', './assets/testObstacle.png');
-        this.load.image('testObstacle1', './assets/testObstacle1.png');
         // Add Auido
-        this.load.audio('music', ['./assets/ourobor-Bus Hell.mp3']);
+        this.load.audio('music', './assets/ourobor-Bus Hell.mp3');
+        this.load.audio('oHit', './assets/ObstacleHit.wav');
+        this.load.audio('pHit', './assets/passengerHit.wav');
+        this.load.audio('pHit2', './assets/passengerHit2.wav');
+        this.load.audio('pHit3', './assets/passengerHit3.wav');
+        this.load.audio('pPickup', './assets/passengerPickup.wav');
+        this.load.audio('pPickup2', './assets/passengerPickup2.wav');
+        this.load.audio('pPickup3', './assets/passengerPickup3.wav');
     }
     
     create() {
@@ -142,10 +159,26 @@ class Play extends Phaser.Scene {
 
         // Shake screen if bus hits something
         if(!this.bus.body.touching.none){
-            if(gameOver){
+            if(gameOver){ // If it hit an obstacle game over
+                // add tween to fade out music
+                this.tweens.add({
+                    targets: this.bgm,
+                    volume: 0,
+                    ease: 'Linear',
+                    duration: 1000,
+                });
+                this.sound.play('oHit', { volume: 0.75 });
                 this.cameras.main.shake(500, 0.05);
             }
             else{
+                // Play random sound
+                var rand = Phaser.Math.Between(1,3);
+                if(rand == 1)
+                    this.sound.play('pHit', { volume: 0.75 });
+                else if(rand == 2)
+                    this.sound.play('pHit2', { volume: 0.75 });
+                else if(rand == 3)
+                    this.sound.play('pHit3', { volume: 0.75 });
                 this.bloodParticles.emitParticleAt(this.bus.x + 20, this.bus.y, 50);
                 this.cameras.main.shake(100, 0.01);
                 this.lastScore = score;
@@ -154,6 +187,13 @@ class Play extends Phaser.Scene {
 
         // Money particles if score increase
         if(score > this.lastScore){
+            var rand = Phaser.Math.Between(1,3);
+                if(rand == 1)
+                    this.sound.play('pPickup', { volume: 0.75 });
+                else if(rand == 2)
+                    this.sound.play('pPickup2', { volume: 0.75 });
+                else if(rand == 3)
+                    this.sound.play('pPickup3', { volume: 0.75 });
             this.moneyParticles.emitParticleAt(this.bus.x + 50, this.bus.y, 5);
             this.moneyParticles.emitParticleAt(this.bus.x - 10, this.bus.y, 5);
             this.lastScore = score;

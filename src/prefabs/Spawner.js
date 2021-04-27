@@ -9,13 +9,13 @@ class Spawner {
         // | how high objects spawn on the screen
         this.yPos = -100;
         // | how spaced out objects are when they're stacked in a column
-        this.stackDistance = 80;
+        this.stackDistance = 120;
         // | placement of spawners by x position (pixels);
-        this.xPos1 = 80;
-        this.xPos2 = 160;
+        this.xPos1 = 40;
+        this.xPos2 = 135;
         this.xPos3 = 240;
-        this.xPos4 = 320;
-        this.xPos5 = 400;
+        this.xPos4 = 345;
+        this.xPos5 = 440;
         // | list of all possible spawn patterns
         let pat0 = { c1:'none', c2:'obst', c3:'none', c4:'obst', c5:'ped3'}
         let pat1 = { c1:'none', c2:'obst', c3:'ped3', c4:'obst', c5:'ped3'}
@@ -67,48 +67,49 @@ class Spawner {
                 break;
             case 'obst':
                 // | spawn obstacle
-                currObst = new Obstacle(this.scene, xPos, this.yPos, 'testObstacle');
+                //currObst = new Obstacle(this.scene, xPos, this.yPos, 'testObstacle');
+                currObst = this.makeObs(xPos, this.yPos);
                 this.setObsCollision(this.bus, currObst);
                 break;
             case 'mPed':
                 // | spawn a single pedestrian in the middle
-                currPed = new Pedestrian(this.scene, xPos, this.yPos, 'testObstacle1', 1);
+                currPed = this.makePed(xPos, this.yPos);
                 this.setPedCollision(this.bus, this.busLeft, this.busRight, currPed);
                 break;
             case 'hPed':
                 // | spawn a single pedestrian slightly higher
-                currPed = new Pedestrian(this.scene, xPos, this.yPos-this.stackDistance, 'testObstacle1', 1);
+                currPed = this.makePed(xPos, this.yPos - this.stackDistance);
                 this.setPedCollision(this.bus, this.busLeft, this.busRight, currPed);
                 break;
             case 'ped3':
                 // --- Spawn a column of 3 pedestrians
                 // | pedestrian 1
-                currPed = new Pedestrian(this.scene, xPos, this.yPos+this.stackDistance, 'testObstacle1', 1);
+                currPed = this.makePed(xPos, this.yPos + this.stackDistance);
                 this.setPedCollision(this.bus, this.busLeft, this.busRight, currPed);
                 // | pedestrian 2
-                currPed = new Pedestrian(this.scene, xPos, this.yPos, 'testObstacle1', 1);
+                currPed = this.makePed(xPos, this.yPos);
                 this.setPedCollision(this.bus, this.busLeft, this.busRight, currPed);
                 // | pedestrian 3
-                currPed = new Pedestrian(this.scene, xPos, this.yPos-this.stackDistance, 'testObstacle1', 5);
+                currPed = this.makePed(xPos, this.yPos - this.stackDistance);
                 this.setPedCollision(this.bus, this.busLeft, this.busRight, currPed);
                 break;
             case 'sBot':
                 // | spawn a obstacle with a ped in front (lower on the screen) 
-                currObst = new Obstacle(this.scene, xPos, this.yPos, 'testObstacle');
+                currObst = this.makeObs(xPos, this.yPos);
                 this.setObsCollision(this.bus, currObst);
-                currPed = new Pedestrian(this.scene, xPos, this.yPos+this.stackDistance, 'testObstacle1', 1);
+                currPed = this.makePed(xPos, this.yPos + this.stackDistance);
                 this.setPedCollision(this.bus, this.busLeft, this.busRight, currPed);
                 break;
             case 'sMid':
-                currObst = new Obstacle(this.scene, xPos, this.yPos-this.stackDistance, 'testObstacle');
+                currObst = this.makeObs(xPos, this.yPos-this.stackDistance);
                 this.setObsCollision(this.bus, currObst);
-                currPed = new Pedestrian(this.scene, xPos, this.yPos, 'testObstacle1', 1);
+                currPed = this.makePed(xPos, this.yPos);
                 this.setPedCollision(this.bus, this.busLeft, this.busRight, currPed);
                 break;
             case 'sTop':
-                currObst = new Obstacle(this.scene, xPos, this.yPos-(this.stackDistance*2), 'testObstacle');
+                currObst = this.makeObs(xPos, this.yPos-(this.stackDistance*2));
                 this.setObsCollision(this.bus, currObst);
-                currPed = new Pedestrian(this.scene, xPos, this.yPos-this.stackDistance, 'testObstacle1', 1);
+                currPed = this.makePed(xPos, this.yPos - this.stackDistance);
                 this.setPedCollision(this.bus, this.busLeft, this.busRight, currPed);
                 break;
             default:
@@ -116,6 +117,37 @@ class Spawner {
         }
     }
 
+    makeObs(xPos, yPos){
+        var rand = Phaser.Math.Between(1,3);
+        let chosenSprite;
+            if(rand == 1)
+                chosenSprite = 'car1';
+            else if(rand == 2)
+                chosenSprite = 'car2';
+            else if(rand == 3)
+                chosenSprite = 'car3';
+        let newObst = new Obstacle(this.scene, xPos, yPos, chosenSprite);
+        return newObst;
+    }
+
+    makePed(xPos, yPos){
+        let newObst;
+        var rand = Phaser.Math.Between(1,4);
+            if(rand == 1){
+                newObst = new Pedestrian(this.scene, xPos, yPos, 'ped1', 1);
+            }
+            else if(rand == 2){
+                newObst = new Pedestrian(this.scene, xPos, yPos, 'ped2', 1);
+            }
+            else if(rand == 3){
+                newObst = new Pedestrian(this.scene, xPos, yPos, 'ped3', 1);
+            }
+            else if(rand == 4){
+                newObst = new Pedestrian(this.scene, xPos, yPos, 'rped1', 5);
+            }
+        return newObst;
+    }
+    
     setObsCollision(bus, obstacle){
         this.scene.physics.add.overlap(bus, obstacle, function(bus, obstacle) {
             console.log("obstacle hit!!");
