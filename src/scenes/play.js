@@ -11,9 +11,19 @@ class Play extends Phaser.Scene {
         this.load.image('blood', './assets/blood.png');
         this.load.image('money', './assets/money.png');
         this.load.image('bus', './assets/BUSsprite.png');
-        this.load.image('street', './assets/street_background.png');
+        // Street background
+        this.load.image('street', './assets/street_background_5lane.png');
+        // Earth Obstacles
+        this.load.image('car1', './assets/carsprite_1.png');
+        this.load.image('car2', './assets/carsprite_2.png');
+        this.load.image('car3', './assets/carsprite_3.png');
+        // Earth Pedestrians
+        this.load.image('ped1', './assets/pedestrian_1.png');
+        this.load.image('ped2', './assets/pedestrian_2.png');
+        this.load.image('ped3', './assets/pedestrian_3.png');
+        this.load.image('rped1', './assets/richpedestrian_1.png');
+        // Extra
         this.load.image('testObstacle', './assets/testObstacle.png');
-        this.load.image('testObstacle1', './assets/testObstacle1.png');
         // Add Auido
         this.load.audio('music', './assets/ourobor-Bus Hell.mp3');
         this.load.audio('oHit', './assets/ObstacleHit.wav');
