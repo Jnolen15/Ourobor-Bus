@@ -14,9 +14,20 @@ class Play extends Phaser.Scene {
         this.load.image('street', './assets/street_background.png');
         this.load.image('testObstacle', './assets/testObstacle.png');
         this.load.image('testObstacle1', './assets/testObstacle1.png');
+        // Add Auido
+        this.load.audio('music', ['./assets/ourobor-Bus Hell.mp3']);
     }
     
     create() {
+        // set up audio, play bgm
+        this.bgm = this.sound.add('music', { 
+            mute: false,
+            volume: 0.5,
+            rate: 1,
+            loop: true 
+        });
+        this.bgm.play();
+        
         // Street Background
         this.street = this.add.tileSprite(0,0,480,640, 'street').setOrigin(0,0);
         
