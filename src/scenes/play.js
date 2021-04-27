@@ -47,13 +47,13 @@ class Play extends Phaser.Scene {
         this.bgm.play();
         
         // Street Background
-        this.street = this.add.tileSprite(0,0,480,640, 'street').setOrigin(0,0);
+        this.street = this.add.tileSprite(0,0,480,840, 'street').setOrigin(0,0);
         
         // set up cursor keys
         cursors = this.input.keyboard.createCursorKeys();
 
         // Add Bus
-        this.bus = new Bus(this, 220, 560, 'bus').setOrigin(0,0);
+        this.bus = new Bus(this, 220, 760, 'bus').setOrigin(0,0);
         this.bus.setScale(1.5);
 
         // object array (pedestrians and obstacles)

@@ -1,7 +1,7 @@
 let config = {
     type: Phaser.CANVAS,
     width: 480,
-    height: 640,
+    height: 840,
     scale: {
         autoCenter: Phaser.Scale.CENTER_BOTH
     },
