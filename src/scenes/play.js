@@ -17,6 +17,7 @@ class Play extends Phaser.Scene {
         this.load.image('car1', './assets/carsprite_1.png');
         this.load.image('car2', './assets/carsprite_2.png');
         this.load.image('car3', './assets/carsprite_3.png');
+        this.load.image('tree', './assets/obstacle_tree.png');
         // Earth Pedestrians
         this.load.image('ped1', './assets/pedestrian_1.png');
         this.load.image('ped2', './assets/pedestrian_2.png');
@@ -181,7 +182,7 @@ class Play extends Phaser.Scene {
                     this.sound.play('pHit2', { volume: 0.75 });
                 else if(rand == 3)
                     this.sound.play('pHit3', { volume: 0.75 });
-                this.bloodParticles.emitParticleAt(this.bus.x + 20, this.bus.y, 50);
+                this.bloodParticles.emitParticleAt(this.bus.x + 40, this.bus.y, 50);
                 this.cameras.main.shake(100, 0.01);
                 this.lastScore = score;
             }
@@ -196,7 +197,7 @@ class Play extends Phaser.Scene {
                     this.sound.play('pPickup2', { volume: 0.75 });
                 else if(rand == 3)
                     this.sound.play('pPickup3', { volume: 0.75 });
-            this.moneyParticles.emitParticleAt(this.bus.x + 50, this.bus.y, 5);
+            this.moneyParticles.emitParticleAt(this.bus.x + 90, this.bus.y, 5);
             this.moneyParticles.emitParticleAt(this.bus.x - 10, this.bus.y, 5);
             this.lastScore = score;
         }

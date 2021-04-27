@@ -1,5 +1,5 @@
 class Obstacle extends Phaser.Physics.Arcade.Sprite { 
-    constructor(scene, x, y, texture, frame){
+    constructor(scene, x, y, texture, moveSpeed, frame){
         super(scene, x, y, texture, frame);
         // Add self 
         scene.add.existing(this);
@@ -8,7 +8,7 @@ class Obstacle extends Phaser.Physics.Arcade.Sprite {
         scene.physics.add.existing(this);
         
         // Obstacle properties
-        this.moveSpeed = 250;
+        this.moveSpeed = moveSpeed;
         this.body.velocity.y += this.moveSpeed;
         this.maximumY = 640 + 20; 
 
