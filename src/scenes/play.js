@@ -53,15 +53,18 @@ class Play extends Phaser.Scene {
 
         // Add Bus
         this.bus = new Bus(this, 220, 560, 'bus').setOrigin(0,0);
+        this.bus.setScale(1.5);
 
         // object array (pedestrians and obstacles)
         this.objects = [];
 
         // Adding side hitboxes
-        this.leftHitbox = this.physics.add.sprite(this.bus.x - 40,this.bus.y, 'bus').setOrigin(0,0);
-        this.rightHitbox = this.physics.add.sprite(this.bus.x + 40,this.bus.y, 'bus').setOrigin(0,0);
+        this.leftHitbox = this.physics.add.sprite(this.bus.x, this.bus.y-100, 'bus').setOrigin(0,0);
+        this.rightHitbox = this.physics.add.sprite(this.bus.x, this.bus.y-100, 'bus').setOrigin(0,0);
         this.leftHitbox.alpha = 0;
         this.rightHitbox.alpha = 0;
+        this.leftHitbox.setScale(1.5);
+        this.rightHitbox.setScale(1.5);
 
         // Add Spawner
         this.spawner = new Spawner(this, this.bus, this.leftHitbox, this.rightHitbox);
@@ -96,7 +99,6 @@ class Play extends Phaser.Scene {
             gravityY: 300,
             on: false,
         }
-
         this.bloodParticles = this.add.particles('blood');
         this.bloodemitter = this.bloodParticles.createEmitter(bloodparticleConfig);
 
@@ -128,8 +130,8 @@ class Play extends Phaser.Scene {
             this.street.tilePositionY -= 6;
         
         // Move hitboxes with bus
-        this.leftHitbox.x = this.bus.x + 40;
-        this.rightHitbox.x = this.bus.x - 40;
+        this.leftHitbox.x = this.bus.x + 80;
+        this.rightHitbox.x = this.bus.x - 80;
         
         // Update Bus
         if(!gameOver)
