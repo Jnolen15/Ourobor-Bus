@@ -23,6 +23,9 @@ class Play extends Phaser.Scene {
         // Add Bus
         this.bus = new Bus(this, 220, 560, 'bus').setOrigin(0,0);
 
+        // object array (pedestrians and obstacles)
+        this.objects = [];
+
         // Adding side hitboxes
         this.leftHitbox = this.physics.add.sprite(this.bus.x - 40,this.bus.y, 'bus').setOrigin(0,0);
         this.rightHitbox = this.physics.add.sprite(this.bus.x + 40,this.bus.y, 'bus').setOrigin(0,0);
@@ -70,6 +73,21 @@ class Play extends Phaser.Scene {
         // Update Bus
         if(!gameOver)
             this.bus.update();
+        
+        // update objects (pedestrians and obstacles)
+        if (this.objects.length >= 1) {
+            this.objects.forEach(
+                (item, index)=>{
+                    if (item.active == true) {
+                        // update the item if it still exists 
+                        item.update();
+                    }
+                    else {
+                        // remove the item if it is no longer active
+                        this.objects.splice(index, 1);
+                    }
+                });
+        }
 
         // Update score
         if(!gameOver){
