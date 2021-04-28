@@ -268,20 +268,14 @@ class Play extends Phaser.Scene {
         }
 
         // check key input for restart
-        if (gameOver && Phaser.Input.Keyboard.JustDown(this.keyR)){
+        if (gameOver){
             score = 0;
             distance = 0;
             gameOver = false;
             this.lastScore = 0;
             this.didEndGame = false;
-            this.scene.restart();
-        }
-        else if (gameOver && Phaser.Input.Keyboard.JustDown(this.keyM)) {
-            score = 0;
-            distance = 0;
-            gameOver = false;
-            this.didEndGame = false;
-            this.scene.start('menuScene');
+            if(Phaser.Input.Keyboard.JustDown(this.keyR)) this.scene.restart();
+            else if(Phaser.Input.Keyboard.JustDown(this.keyM)) this.scene.start('menuScene');
         }
     }
 
