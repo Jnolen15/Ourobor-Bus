@@ -4,6 +4,9 @@ class Play extends Phaser.Scene {
 
         this.didEndGame = false;
         this.lastScore = 0;
+        this.hellBound = -5;
+        this.heavenBound = 5;
+        this.prevLocation = 'Earth';
     }
 
     preload(){ 
@@ -13,6 +16,11 @@ class Play extends Phaser.Scene {
         this.load.image('bus', './assets/BUSsprite.png');
         // Street background
         this.load.image('street', './assets/street_background_5lane.png');
+        this.load.image('hellStreet', './assets/street_background_hell.png');
+        this.load.image('heavenStreet', './assets/street_background_heaven.png');
+        // Transitions
+        this.load.image('hellTransition', './assets/transition_Hell.png');
+        this.load.image('heavenTransition', './assets/transition_Heaven.png');
         // Earth Obstacles
         this.load.image('car1', './assets/carsprite_1.png');
         this.load.image('car2', './assets/carsprite_2.png');
@@ -26,7 +34,9 @@ class Play extends Phaser.Scene {
         // Extra
         this.load.image('testObstacle', './assets/testObstacle.png');
         // Add Auido
-        this.load.audio('music', './assets/ourobor-Bus Hell.mp3');
+        this.load.audio('music', './assets/Ourobor-Bus_Earth.wav');
+        this.load.audio('hellMusic', './assets/Ourobor-Bus_Hell.wav');
+        this.load.audio('heavenMusic', './assets/Ourobor-Bus_Heaven.wav');
         this.load.audio('oHit', './assets/ObstacleHit.wav');
         this.load.audio('pHit', './assets/passengerHit.wav');
         this.load.audio('pHit2', './assets/passengerHit2.wav');
@@ -44,11 +54,29 @@ class Play extends Phaser.Scene {
             rate: 1,
             loop: true 
         });
+        this.hellbgm = this.sound.add('hellMusic', { 
+            mute: false,
+            volume: 0.0,
+            rate: 1,
+            loop: true 
+        });
+        this.heavenbgm = this.sound.add('heavenMusic', { 
+            mute: false,
+            volume: 0.0,
+            rate: 1,
+            loop: true 
+        });
         this.bgm.play();
+        this.hellbgm.play();
+        this.heavenbgm.play();
         
         // Street Background
         this.street = this.add.tileSprite(0,0,480,840, 'street').setOrigin(0,0);
-        
+        this.hellStreet = this.add.tileSprite(0,0,480,840, 'hellStreet').setOrigin(0,0);
+        this.heavenStreet = this.add.tileSprite(0,0,480,840, 'heavenStreet').setOrigin(0,0);
+        this.hellStreet.alpha = 0;
+        this.heavenStreet.alpha = 0;
+
         // set up cursor keys
         cursors = this.input.keyboard.createCursorKeys();
 
@@ -133,8 +161,11 @@ class Play extends Phaser.Scene {
         }
 
         // Move street
-        if(!gameOver)
+        if(!gameOver){
             this.street.tilePositionY -= 6;
+            this.hellStreet.tilePositionY -= 6;
+            this.heavenStreet.tilePositionY -= 6;
+        }
         
         // Move hitboxes with bus
         this.leftHitbox.x = this.bus.x + 80;
@@ -166,12 +197,40 @@ class Play extends Phaser.Scene {
             distance++;
         }
 
+        // Earth Swap
+        if(score > this.hellBound && score < this.heavenBound && !isEarth){
+            console.log("Next stop Earth!");
+            this.earthSwap();
+        }
+        // Hell Swap
+        if(score <= this.hellBound && !isHell){
+            console.log("Next stop Hell!");
+            this.hellSwap();
+        }
+        // Heaven Swap
+        if(score >= this.heavenBound && !isHeaven){
+            console.log("Next stop Heaven!");
+            this.heavenSwap();
+        }
+
         // Shake screen if bus hits something
         if(!this.bus.body.touching.none){
             if(gameOver){ // If it hit an obstacle game over
                 // add tween to fade out music
                 this.tweens.add({
                     targets: this.bgm,
+                    volume: 0,
+                    ease: 'Linear',
+                    duration: 1000,
+                });
+                this.tweens.add({
+                    targets: this.hellbgm,
+                    volume: 0,
+                    ease: 'Linear',
+                    duration: 1000,
+                });
+                this.tweens.add({
+                    targets: this.heavenbgm,
                     volume: 0,
                     ease: 'Linear',
                     duration: 1000,
@@ -208,8 +267,8 @@ class Play extends Phaser.Scene {
             this.lastScore = score;
         }
 
-         // check key input for restart
-         if (gameOver && Phaser.Input.Keyboard.JustDown(this.keyR)){
+        // check key input for restart
+        if (gameOver && Phaser.Input.Keyboard.JustDown(this.keyR)){
             score = 0;
             distance = 0;
             gameOver = false;
@@ -223,6 +282,129 @@ class Play extends Phaser.Scene {
             gameOver = false;
             this.didEndGame = false;
             this.scene.start('menuScene');
+        }
+    }
+
+    earthSwap(){
+        isEarth = true;
+        isHell = false;
+        isHeaven = false;
+        // stop other music
+        this.tweens.add({
+            targets: this.hellbgm,
+            volume: 0,
+            ease: 'Linear',
+            duration: 1000,
+        });
+        this.tweens.add({
+            targets: this.heavenbgm,
+            volume: 0,
+            ease: 'Linear',
+            duration: 1000,
+        });
+        if(this.prevLocation == 'Hell'){
+            //add transition
+            this.hellTransition = this.physics.add.sprite(0, -1040, 'hellTransition').setOrigin(0,0);
+            this.hellTransition.depth = 100;
+            this.hellTransition.body.velocity.y += 500;
+        } else if (this.prevLocation == 'Heaven'){
+            //add transition
+            this.heavenTransition = this.physics.add.sprite(0, -1040, 'heavenTransition').setOrigin(0,0);
+            this.heavenTransition.depth = 100;
+            this.heavenTransition.body.velocity.y += 500;
+        }
+        // | spawn timer setup
+        let timerConfig = {
+            delay: 2000, // milliseconds
+            callback: () => {
+                // make change
+                this.street.alpha = 1;
+                this.hellStreet.alpha = 0;
+                this.heavenStreet.alpha = 0;
+                this.destroyAll();
+                this.prevLocation = 'Earth';
+            },
+            callbackScope: this,
+        }
+        this.spawnerTimer = this.time.addEvent(timerConfig);
+    }
+    
+    hellSwap(){
+        isEarth = false;
+        isHell = true;
+        isHeaven = false;
+        // start music
+        this.tweens.add({
+            targets: this.hellbgm,
+            volume: 0.5,
+            ease: 'Linear',
+            duration: 1000,
+        });
+        //add transition
+        this.hellTransition = this.physics.add.sprite(0, -1040, 'hellTransition').setOrigin(0,0);
+        this.hellTransition.depth = 100;
+        this.hellTransition.body.velocity.y += 500;
+        // | spawn timer setup
+        let timerConfig = {
+            delay: 2000, // milliseconds
+            callback: () => {
+                // make change
+                this.street.alpha = 0;
+                this.hellStreet.alpha = 1;
+                this.heavenStreet.alpha = 0;
+                this.destroyAll();
+                this.prevLocation = 'Hell';
+            },
+            callbackScope: this,
+        }
+        this.spawnerTimer = this.time.addEvent(timerConfig);
+    }
+
+    heavenSwap(){
+        isEarth = false;
+        isHell = false;
+        isHeaven = true;
+        // start music
+        this.tweens.add({
+            targets: this.heavenbgm,
+            volume: 0.5,
+            ease: 'Linear',
+            duration: 1000,
+        });
+        //add transition
+        this.heavenTransition = this.physics.add.sprite(0, -1040, 'heavenTransition').setOrigin(0,0);
+        this.heavenTransition.depth = 100;
+        this.heavenTransition.body.velocity.y += 500;
+        // | spawn timer setup
+        let timerConfig = {
+            delay: 2000, // milliseconds
+            callback: () => {
+                // make change
+                this.street.alpha = 0;
+                this.hellStreet.alpha = 0;
+                this.heavenStreet.alpha = 1;
+                this.destroyAll();
+                this.prevLocation = 'Heaven';
+            },
+            callbackScope: this,
+        }
+        this.spawnerTimer = this.time.addEvent(timerConfig);
+    }
+
+    destroyAll(){
+        if (this.objects.length >= 1) {
+            this.objects.forEach(
+                (item, index)=>{
+                    if (item.active == true) {
+                        // update the item if it still exists 
+                        item.destroy();
+                        this.objects.splice(index, 1);
+                    }
+                    else {
+                        // remove the item if it is no longer active
+                        this.objects.splice(index, 1);
+                    }
+                });
         }
     }
 

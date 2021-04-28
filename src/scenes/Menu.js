@@ -3,10 +3,6 @@ class Menu extends Phaser.Scene {
         super("menuScene");
     }
 
-    preload(){ 
-        this.load.image('street', './assets/street_background.png');
-    }
-
     create() {
         // menu text configuration
         let menuConfig = {
@@ -25,7 +21,6 @@ class Menu extends Phaser.Scene {
         }
 
         // show menu text
-        // this.bg = this.add.tileSprite(0,0,480,640, 'street').setOrigin(0,0);
         this.add.text(game.config.width/8,game.config.height/4, "Title Screen", menuConfig).setOrigin(0,0);
         this.add.text(game.config.width/8,game.config.height * .35, "Press any of the arrow keys", menuConfig).setOrigin(0,0);
         this.add.text(game.config.width/8,game.config.height * .45, "to start!", menuConfig).setOrigin(0,0);

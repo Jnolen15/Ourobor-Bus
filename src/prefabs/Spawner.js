@@ -150,7 +150,7 @@ class Spawner {
                 newObst = new Pedestrian(this.scene, xPos, yPos, 'ped3', 1);
             }
             else if(rand == 4){
-                newObst = new Pedestrian(this.scene, xPos, yPos, 'rped1', 5);
+                newObst = new Pedestrian(this.scene, xPos, yPos, 'rped1', 3);
             }
         return newObst;
     }

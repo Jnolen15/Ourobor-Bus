@@ -23,4 +23,8 @@ class Pedestrian extends Phaser.Physics.Arcade.Sprite {
             this.destroy();
         }
     }
+
+    destroySelf(){
+        this.destroy();
+    }
 }
