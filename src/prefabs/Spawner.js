@@ -118,15 +118,22 @@ class Spawner {
     }
 
     makeObs(xPos, yPos){
-        var rand = Phaser.Math.Between(1,3);
         let chosenSprite;
-            if(rand == 1)
-                chosenSprite = 'car1';
-            else if(rand == 2)
-                chosenSprite = 'car2';
-            else if(rand == 3)
-                chosenSprite = 'car3';
-        let newObst = new Obstacle(this.scene, xPos, yPos, chosenSprite);
+        let moveSpeed;
+        if(xPos != 40 && xPos != 440){ // If spawn lane is a road
+            moveSpeed = 250;
+            var rand = Phaser.Math.Between(1,3);
+                if(rand == 1)
+                    chosenSprite = 'car1';
+                else if(rand == 2)
+                    chosenSprite = 'car2';
+                else if(rand == 3)
+                    chosenSprite = 'car3';
+        } else { // else spawn lane is a sidewalk
+            moveSpeed = 350;
+            chosenSprite = 'tree';
+        }
+        let newObst = new Obstacle(this.scene, xPos, yPos, chosenSprite, moveSpeed);
         return newObst;
     }
 

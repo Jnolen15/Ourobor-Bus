@@ -17,6 +17,7 @@ class Play extends Phaser.Scene {
         this.load.image('car1', './assets/carsprite_1.png');
         this.load.image('car2', './assets/carsprite_2.png');
         this.load.image('car3', './assets/carsprite_3.png');
+        this.load.image('tree', './assets/obstacle_tree.png');
         // Earth Pedestrians
         this.load.image('ped1', './assets/pedestrian_1.png');
         this.load.image('ped2', './assets/pedestrian_2.png');
@@ -46,22 +47,25 @@ class Play extends Phaser.Scene {
         this.bgm.play();
         
         // Street Background
-        this.street = this.add.tileSprite(0,0,480,640, 'street').setOrigin(0,0);
+        this.street = this.add.tileSprite(0,0,480,840, 'street').setOrigin(0,0);
         
         // set up cursor keys
         cursors = this.input.keyboard.createCursorKeys();
 
         // Add Bus
-        this.bus = new Bus(this, 220, 560, 'bus').setOrigin(0,0);
+        this.bus = new Bus(this, 220, 760, 'bus').setOrigin(0,0);
+        this.bus.setScale(1.5);
 
         // object array (pedestrians and obstacles)
         this.objects = [];
 
         // Adding side hitboxes
-        this.leftHitbox = this.physics.add.sprite(this.bus.x - 40,this.bus.y, 'bus').setOrigin(0,0);
-        this.rightHitbox = this.physics.add.sprite(this.bus.x + 40,this.bus.y, 'bus').setOrigin(0,0);
+        this.leftHitbox = this.physics.add.sprite(this.bus.x, this.bus.y-100, 'bus').setOrigin(0,0);
+        this.rightHitbox = this.physics.add.sprite(this.bus.x, this.bus.y-100, 'bus').setOrigin(0,0);
         this.leftHitbox.alpha = 0;
         this.rightHitbox.alpha = 0;
+        this.leftHitbox.setScale(1.5);
+        this.rightHitbox.setScale(1.5);
 
         // Add Spawner
         this.spawner = new Spawner(this, this.bus, this.leftHitbox, this.rightHitbox);
@@ -81,9 +85,11 @@ class Play extends Phaser.Scene {
         }
         this.scoreLeft = this.add.text(10, 10, score + "$", scoreConfig);
         this.scoreRight = this.add.text(320, 10, distance + "ft.", scoreConfig);
+        this.hsRight = this.add.text(320, 40, "HS: " + highScore, scoreConfig);
 
         // Add extra keys
         this.keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
+        this.keyM = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M);
 
         // Particles
         let bloodparticleConfig = {
@@ -96,7 +102,6 @@ class Play extends Phaser.Scene {
             gravityY: 300,
             on: false,
         }
-
         this.bloodParticles = this.add.particles('blood');
         this.bloodemitter = this.bloodParticles.createEmitter(bloodparticleConfig);
 
@@ -118,6 +123,10 @@ class Play extends Phaser.Scene {
     }
 
     update(){
+        if(score > highScore) {
+            highScore = score;
+        }
+
         // End game check
         if(gameOver){
             this.gameisover();
@@ -128,8 +137,8 @@ class Play extends Phaser.Scene {
             this.street.tilePositionY -= 6;
         
         // Move hitboxes with bus
-        this.leftHitbox.x = this.bus.x + 40;
-        this.rightHitbox.x = this.bus.x - 40;
+        this.leftHitbox.x = this.bus.x + 80;
+        this.rightHitbox.x = this.bus.x - 80;
         
         // Update Bus
         if(!gameOver)
@@ -179,7 +188,7 @@ class Play extends Phaser.Scene {
                     this.sound.play('pHit2', { volume: 0.75 });
                 else if(rand == 3)
                     this.sound.play('pHit3', { volume: 0.75 });
-                this.bloodParticles.emitParticleAt(this.bus.x + 20, this.bus.y, 50);
+                this.bloodParticles.emitParticleAt(this.bus.x + 40, this.bus.y, 50);
                 this.cameras.main.shake(100, 0.01);
                 this.lastScore = score;
             }
@@ -194,7 +203,7 @@ class Play extends Phaser.Scene {
                     this.sound.play('pPickup2', { volume: 0.75 });
                 else if(rand == 3)
                     this.sound.play('pPickup3', { volume: 0.75 });
-            this.moneyParticles.emitParticleAt(this.bus.x + 50, this.bus.y, 5);
+            this.moneyParticles.emitParticleAt(this.bus.x + 90, this.bus.y, 5);
             this.moneyParticles.emitParticleAt(this.bus.x - 10, this.bus.y, 5);
             this.lastScore = score;
         }
@@ -207,6 +216,13 @@ class Play extends Phaser.Scene {
             this.lastScore = 0;
             this.didEndGame = false;
             this.scene.restart();
+        }
+        else if (gameOver && Phaser.Input.Keyboard.JustDown(this.keyM)) {
+            score = 0;
+            distance = 0;
+            gameOver = false;
+            this.didEndGame = false;
+            this.scene.start('menuScene');
         }
     }
 
@@ -230,7 +246,7 @@ class Play extends Phaser.Scene {
             this.add.text(game.config.width / 2, game.config.height / 2, 'YOU CRASHED!', endConfig).setOrigin(0.5);
             this.add.text(game.config.width / 2, game.config.height / 2 + 64, 'CASH MADE: ' + score + "$", endConfig).setOrigin(0.5);
             this.add.text(game.config.width / 2, game.config.height / 2 + 128, 'DISTANCE TRAVELED: ' + distance + " FEET", endConfig).setOrigin(0.5);
-            this.add.text(game.config.width / 2, game.config.height / 2 + 192, 'R TO RESTART', endConfig).setOrigin(0.5);
+            this.add.text(game.config.width / 2, game.config.height / 2 + 192, 'R TO RESTART OR M TO MENU', endConfig).setOrigin(0.5);
         }
     }
 }
