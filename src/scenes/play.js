@@ -85,9 +85,11 @@ class Play extends Phaser.Scene {
         }
         this.scoreLeft = this.add.text(10, 10, score + "$", scoreConfig);
         this.scoreRight = this.add.text(320, 10, distance + "ft.", scoreConfig);
+        this.hsRight = this.add.text(320, 40, "HS: " + highScore, scoreConfig);
 
         // Add extra keys
         this.keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
+        this.keyM = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M);
 
         // Particles
         let bloodparticleConfig = {
@@ -121,6 +123,10 @@ class Play extends Phaser.Scene {
     }
 
     update(){
+        if(score > highScore) {
+            highScore = score;
+        }
+
         // End game check
         if(gameOver){
             this.gameisover();
@@ -211,6 +217,13 @@ class Play extends Phaser.Scene {
             this.didEndGame = false;
             this.scene.restart();
         }
+        else if (gameOver && Phaser.Input.Keyboard.JustDown(this.keyM)) {
+            score = 0;
+            distance = 0;
+            gameOver = false;
+            this.didEndGame = false;
+            this.scene.start('menuScene');
+        }
     }
 
     gameisover(){
@@ -233,7 +246,7 @@ class Play extends Phaser.Scene {
             this.add.text(game.config.width / 2, game.config.height / 2, 'YOU CRASHED!', endConfig).setOrigin(0.5);
             this.add.text(game.config.width / 2, game.config.height / 2 + 64, 'CASH MADE: ' + score + "$", endConfig).setOrigin(0.5);
             this.add.text(game.config.width / 2, game.config.height / 2 + 128, 'DISTANCE TRAVELED: ' + distance + " FEET", endConfig).setOrigin(0.5);
-            this.add.text(game.config.width / 2, game.config.height / 2 + 192, 'R TO RESTART', endConfig).setOrigin(0.5);
+            this.add.text(game.config.width / 2, game.config.height / 2 + 192, 'R TO RESTART OR M TO MENU', endConfig).setOrigin(0.5);
         }
     }
 }
