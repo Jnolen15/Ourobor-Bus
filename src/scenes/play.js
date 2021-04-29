@@ -258,6 +258,9 @@ class Play extends Phaser.Scene {
                 score = 0;
                 distance = 0;
                 gameOver = false;
+                isEarth = true;
+                isHell = false;
+                isHeaven = false;
                 this.lastScore = 0;
                 this.didEndGame = false;
                 this.scene.start('menuScene');
