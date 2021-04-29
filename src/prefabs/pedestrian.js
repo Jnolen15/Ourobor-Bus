@@ -9,7 +9,7 @@ class Pedestrian extends Phaser.Physics.Arcade.Sprite {
         
         // Pedestian properties
         this.value = scorevalue;
-        this.moveSpeed = 350;
+        this.moveSpeed = pedMoveSpeed;
         this.body.velocity.y += this.moveSpeed;
         this.maximumY = 880; 
         

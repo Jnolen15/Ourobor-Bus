@@ -12,7 +12,7 @@ let config = {
             gravity: {x: 0, y: 0},
         }
     },
-    scene: [Menu, Play],
+    scene: [Menu, Play, Tutorial],
 }
 
 //define game
@@ -27,3 +27,7 @@ let isEarth = true;
 let isHell = false;
 let isHeaven = false;
 let gameOver = false;
+let scrollSpeed = 6;
+let busSpeed = 80;
+let pedMoveSpeed = 350;
+let busDrag = 500;

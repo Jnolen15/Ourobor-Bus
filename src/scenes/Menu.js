@@ -59,8 +59,8 @@ class Menu extends Phaser.Scene {
 
         // show menu text
         this.add.text(game.config.width/8,game.config.height/4, "Title Screen", menuConfig).setOrigin(0,0);
-        this.add.text(game.config.width/8,game.config.height * .35, "Press any of the arrow keys", menuConfig).setOrigin(0,0);
-        this.add.text(game.config.width/8,game.config.height * .45, "to start!", menuConfig).setOrigin(0,0);
+        this.add.text(game.config.width/8,game.config.height * .35, "[↑] Start", menuConfig).setOrigin(0,0);
+        this.add.text(game.config.width/8,game.config.height * .45, "[↓] Tutorial", menuConfig).setOrigin(0,0);
         this.add.text(game.config.width/8,game.config.height * .55, "High Score: " + highScore, menuConfig).setOrigin(0,0);
 
         // define keys
@@ -71,11 +71,11 @@ class Menu extends Phaser.Scene {
     }
 
     update() {
-        if (Phaser.Input.Keyboard.JustDown(this.keyLEFT) ||
-            Phaser.Input.Keyboard.JustDown(this.keyRIGHT) ||
-            Phaser.Input.Keyboard.JustDown(this.keyUP) ||
-            Phaser.Input.Keyboard.JustDown(this.keyDOWN)) {
+        if (Phaser.Input.Keyboard.JustDown(this.keyUP)) {
             this.scene.start('playScene');    
+        }
+        else if(Phaser.Input.Keyboard.JustDown(this.keyDOWN)) {
+            this.scene.start('tutorialScene');
         }
     }
 }

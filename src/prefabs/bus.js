@@ -10,7 +10,7 @@ class Bus extends Phaser.Physics.Arcade.Sprite {
         // Bus properties
         this.moveSpeed = 20;
         this.setCollideWorldBounds(true);
-        this.setDragX(500);
+        this.setDragX(busDrag);
         this.setDepth(100);
         this.setMaxVelocity(380);
     }

@@ -9,7 +9,6 @@ class Play extends Phaser.Scene {
         this.prevLocation = 'Earth';
     }
 
-    
     create() {
         // set up audio, play bgm
         this.bgm = this.sound.add('music', { 
@@ -111,6 +110,21 @@ class Play extends Phaser.Scene {
 
         this.moneyParticles = this.add.particles('money');
         this.moneyemitter = this.moneyParticles.createEmitter(moneyparticleConfig);
+
+        // | spawn timer setup
+        // let timerConfig = {
+        //     delay: 3000, // milliseconds
+        //     callback: () => {
+        //         if(!gameOver) {
+        //             scrollSpeed *= .2;
+        //             busSpeed *= .15;
+        //             pedMoveSpeed *= .2;
+        //             busDrag *= .96;
+        //         }
+        //     },
+        //     callbackScope: this,
+        //     loop: true
+        // }
     }
 
     update(){
@@ -125,13 +139,13 @@ class Play extends Phaser.Scene {
 
         // Move street
         if(!gameOver){
-            this.street.tilePositionY -= 6;
-            this.hellStreet.tilePositionY -= 6;
-            this.heavenStreet.tilePositionY -= 6;
+            this.street.tilePositionY -= scrollSpeed;
+            this.hellStreet.tilePositionY -= scrollSpeed;
+            this.heavenStreet.tilePositionY -= scrollSpeed;
         }
         // Move hitboxes with bus
-        this.leftHitbox.x = this.bus.x + 80;
-        this.rightHitbox.x = this.bus.x - 80;
+        this.leftHitbox.x = this.bus.x + busSpeed;
+        this.rightHitbox.x = this.bus.x - busSpeed;
         
         // Update Bus
         if(!gameOver)
