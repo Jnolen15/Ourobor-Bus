@@ -75,8 +75,8 @@ class Play extends Phaser.Scene {
             fixedWidth: 150
         }
         this.scoreLeft = this.add.text(10, 10, score + "$", scoreConfig);
-        this.scoreRight = this.add.text(320, 10, distance + "ft.", scoreConfig);
-        this.hsRight = this.add.text(320, 40, "HS: " + highScore, scoreConfig);
+        this.scoreRight = this.add.text(10, 40, distance + "ft.", scoreConfig);
+        this.hsRight = this.add.text(320, 10, "HS: " + highScore + "$", scoreConfig);
 
         // Add extra keys
         this.keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
@@ -152,18 +152,16 @@ class Play extends Phaser.Scene {
             this.bus.update();
         
         // update objects (pedestrians and obstacles)
-        if (this.objects.length >= 1) {
-            this.objects.forEach(
-                (item, index)=>{
-                    if (item.active == true) {
-                        // update the item if it still exists 
-                        item.update();
-                    }
-                    else {
-                        // remove the item if it is no longer active
-                        this.objects.splice(index, 1);
-                    }
-                });
+        for (let i = 0; i < this.objects.length; i++) {
+            if (this.objects[i].active == true) {
+                // update the item if it still exists 
+                this.objects[i].update();
+            }
+            else {
+                // remove the item if it's no longer active
+                this.objects.splice(i, 1);
+                i--;
+            }
         }
 
         // Update score
@@ -362,11 +360,14 @@ class Play extends Phaser.Scene {
             delay: 2000, // milliseconds
             callback: () => {
                 // make change
+                console.log("This many before: " + this.objects.length);
+                console.log("SWAPPING");
                 this.street.alpha = 0;
                 this.hellStreet.alpha = 0;
                 this.heavenStreet.alpha = 1;
                 this.destroyAll();
                 this.prevLocation = 'Heaven';
+                console.log("This many after: " + this.objects.length);
             },
             callbackScope: this,
         }
@@ -374,19 +375,16 @@ class Play extends Phaser.Scene {
     }
 
     destroyAll(){
-        if (this.objects.length >= 1) {
-            this.objects.forEach(
-                (item, index)=>{
-                    if (item.active == true) {
-                        // update the item if it still exists 
-                        item.destroy();
-                        this.objects.splice(index, 1);
-                    }
-                    else {
-                        // remove the item if it is no longer active
-                        this.objects.splice(index, 1);
-                    }
-                });
+        while (this.objects.length != 0) {
+            if (this.objects[0].active == true) {
+                // destroy the item if it still exists 
+                this.objects[0].destroy();
+                this.objects.splice(0, 1);
+            }
+            else {
+                // remove the item if it's no longer active
+                this.objects.splice(0, 1);
+            }
         }
     }
 
