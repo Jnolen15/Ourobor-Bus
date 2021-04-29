@@ -78,6 +78,14 @@ class Play extends Phaser.Scene {
         this.scoreRight = this.add.text(10, 40, distance + "ft.", scoreConfig);
         this.hsRight = this.add.text(320, 10, "HS: " + highScore + "$", scoreConfig);
 
+        // Difficulty Setup
+        this.timeElapsed = 0;
+        this.minDiffTime = 15 * 1000;
+        this.maxDiffTime = 60 * 1000;
+        this.currDiff = 0;
+        this.maxObstIncrease = 400; // FIX THIS (NO MAGIC NUMBERS BRO)
+        this.maxScrollIncrease = 6; // FIX THIS (NO MAGIC NUMBERS BRO)
+
         // Add extra keys
         this.keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
         this.keyM = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M);
@@ -110,24 +118,13 @@ class Play extends Phaser.Scene {
 
         this.moneyParticles = this.add.particles('money');
         this.moneyemitter = this.moneyParticles.createEmitter(moneyparticleConfig);
-
-        // | spawn timer setup
-        // let timerConfig = {
-        //     delay: 3000, // milliseconds
-        //     callback: () => {
-        //         if(!gameOver) {
-        //             scrollSpeed *= .2;
-        //             busSpeed *= .15;
-        //             pedMoveSpeed *= .2;
-        //             busDrag *= .96;
-        //         }
-        //     },
-        //     callbackScope: this,
-        //     loop: true
-        // }
     }
 
-    update(){
+    update(time, delta){
+        // update time elapsed and difficulty scale 
+        this.timeElapsed += delta; // in miliseconds
+        this.currDiff = this.inverseLerp(this.timeElapsed, this.minDiffTime, this.maxDiffTime);
+        
         if(score > highScore) {
             highScore = score;
         }
@@ -139,9 +136,9 @@ class Play extends Phaser.Scene {
 
         // Move street
         if(!gameOver){
-            this.street.tilePositionY -= scrollSpeed;
-            this.hellStreet.tilePositionY -= scrollSpeed;
-            this.heavenStreet.tilePositionY -= scrollSpeed;
+            this.street.tilePositionY -= scrollSpeed + (this.currDiff * this.maxScrollIncrease);
+            this.hellStreet.tilePositionY -= scrollSpeed + (this.currDiff * this.maxScrollIncrease);
+            this.heavenStreet.tilePositionY -= scrollSpeed + (this.currDiff * this.maxScrollIncrease);
         }
         // Move hitboxes with bus
         this.leftHitbox.x = this.bus.x + busSpeed;
@@ -155,7 +152,7 @@ class Play extends Phaser.Scene {
         for (let i = 0; i < this.objects.length; i++) {
             if (this.objects[i].active == true) {
                 // update the item if it still exists 
-                this.objects[i].update();
+                this.objects[i].update(this.currDiff * this.maxObstIncrease);
             }
             else {
                 // remove the item if it's no longer active
@@ -412,6 +409,27 @@ class Play extends Phaser.Scene {
             this.add.text(game.config.width / 2, game.config.height / 2 + 64, 'CASH MADE: ' + score + "$", endConfig).setOrigin(0.5);
             this.add.text(game.config.width / 2, game.config.height / 2 + 128, 'DISTANCE TRAVELED: ' + distance + " FEET", endConfig).setOrigin(0.5);
             this.add.text(game.config.width / 2, game.config.height / 2 + 192, 'R TO RESTART OR M TO MENU', endConfig).setOrigin(0.5);
+        }
+    }
+
+    inverseLerp(point, a, b)
+    {
+        if (a == b && point >= b) {
+            return 1.0;
+        }
+        else if (a == b && point < b) {
+            return 0.0;
+        }
+        
+        point = Phaser.Math.Clamp(point, a, b);
+        if (point == a)
+            return 0.0;
+        else if (point == b)
+            return 1.0;
+        else {
+            let d = b - a;
+            let f = b - point;
+            return (d - f) / d;
         }
     }
 }

@@ -16,10 +16,12 @@ class Obstacle extends Phaser.Physics.Arcade.Sprite {
         scene.objects.push(this);
     }
 
-    update() {
+    update(speedIncrease) {
         if (this.y > this.maximumY + 20) {
             // console.log("obstacle deleted");
             this.destroy();
+        } else {
+            this.setVelocityY(this.moveSpeed + speedIncrease);
         }
     }
 

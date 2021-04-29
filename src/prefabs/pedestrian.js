@@ -17,10 +17,12 @@ class Pedestrian extends Phaser.Physics.Arcade.Sprite {
         scene.objects.push(this);
     }
 
-    update() {
+    update(speedIncrease) {
         if (this.y > this.maximumY + 20) {
             // console.log("pedestrian deleted");
             this.destroy();
+        } else {
+            this.setVelocityY(this.moveSpeed + speedIncrease);
         }
     }
 
