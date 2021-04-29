@@ -23,8 +23,8 @@ class Tutorial extends Phaser.Scene {
         // show menu text
         this.add.text(game.config.width/8,game.config.height/4, "Tutorial Screen", menuConfig).setOrigin(0,0);
         this.add.text(game.config.width/8,game.config.height * .35, "Press any of the arrow keys to move bus", menuConfig).setOrigin(0,0);
-        // this.add.text(game.config.width/8,game.config.height * .45, "bus", menuConfig).setOrigin(0,0);
-        // this.add.text(game.config.width/8,game.config.height * .55, "High Score: " + highScore, menuConfig).setOrigin(0,0);
+        this.add.text(game.config.width - 170,game.config.height - 70, "Start [→]", menuConfig).setOrigin(0,0);
+        this.add.text(25,25, "[←]", menuConfig).setOrigin(0,0);
 
         // define keys
         this.keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
@@ -34,6 +34,11 @@ class Tutorial extends Phaser.Scene {
     }
 
     update() {
-
+        if (Phaser.Input.Keyboard.JustDown(this.keyLEFT)) {
+            this.scene.start('menuScene');    
+        }
+        else if(Phaser.Input.Keyboard.JustDown(this.keyRIGHT)) {
+            this.scene.start('playScene');
+        }
     }
 }
