@@ -76,8 +76,8 @@ class Play extends Phaser.Scene {
             fixedWidth: 150
         }
         this.scoreLeft = this.add.text(10, 10, score + "$", scoreConfig);
-        this.scoreRight = this.add.text(320, 10, distance + "ft.", scoreConfig);
-        this.hsRight = this.add.text(320, 40, "HS: " + highScore, scoreConfig);
+        this.scoreRight = this.add.text(10, 40, distance + "ft.", scoreConfig);
+        this.hsRight = this.add.text(320, 10, "HS: " + highScore + "$", scoreConfig);
 
         // Add extra keys
         this.keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
