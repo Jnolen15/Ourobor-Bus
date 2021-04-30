@@ -126,8 +126,8 @@ class Play extends Phaser.Scene {
         // update time elapsed and difficulty scale 
         this.timeElapsed += delta; // in miliseconds
         this.currDiff = this.inverseLerp(this.timeElapsed, this.minDiffTime, this.maxDiffTime);
-        if (Phaser.Input.Keyboard.JustDown(this.keyR))
-            console.log(this.currDiff);
+        //if (Phaser.Input.Keyboard.JustDown(this.keyR))
+        //    console.log(this.currDiff);
         
         if(Math.abs(score) > Math.abs(highScore)) {
             highScore = score;

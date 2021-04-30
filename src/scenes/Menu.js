@@ -25,6 +25,16 @@ class Menu extends Phaser.Scene {
         this.load.image('ped2', './assets/pedestrian_2.png');
         this.load.image('ped3', './assets/pedestrian_3.png');
         this.load.image('rped1', './assets/richpedestrian_1.png');
+        // Hell Pedestrians
+        this.load.image('hellped1', './assets/hellpedestrian_1.png');
+        this.load.image('hellped2', './assets/hellpedestrian_2.png');
+        this.load.image('hellped3', './assets/hellpedestrian_3.png');
+        this.load.image('hellrped1', './assets/hellrichpedestrian_1.png');
+        // Heaven Pedestrians
+        this.load.image('heavenped1', './assets/heavenpedestrian_1.png');
+        this.load.image('heavenped2', './assets/heavenpedestrian_2.png');
+        this.load.image('heavenped3', './assets/heavenpedestrian_3.png');
+        this.load.image('heavenrped1', './assets/heavenrichpedestrian_1.png');
         // Extra
         this.load.image('testObstacle', './assets/testObstacle.png');
         // Add Auido

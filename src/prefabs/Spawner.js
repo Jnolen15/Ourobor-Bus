@@ -16,6 +16,10 @@ class Spawner {
         this.xPos3 = 240;
         this.xPos4 = 345;
         this.xPos5 = 440;
+        // | sprite arrays
+        this.earthPeds = ['ped1', 'ped2', 'ped3'];
+        this.hellPeds = ['hellped1', 'hellped2', 'hellped3'];
+        this.heavenPeds = ['heavenped1', 'heavenped2', 'heavenped3'];
         // | list of all possible spawn patterns
         let pat0 = { c1:'none', c2:'obst', c3:'none', c4:'obst', c5:'ped3'}
         let pat1 = { c1:'none', c2:'obst', c3:'ped3', c4:'obst', c5:'ped3'}
@@ -140,18 +144,28 @@ class Spawner {
     makePed(xPos, yPos){
         let newObst;
         var rand = Phaser.Math.Between(1,4);
-            if(rand == 1){
-                newObst = new Pedestrian(this.scene, xPos, yPos, 'ped1', 1);
-            }
-            else if(rand == 2){
-                newObst = new Pedestrian(this.scene, xPos, yPos, 'ped2', 1);
-            }
-            else if(rand == 3){
-                newObst = new Pedestrian(this.scene, xPos, yPos, 'ped3', 1);
-            }
-            else if(rand == 4){
+        if(isEarth){
+            if(rand == 4){
                 newObst = new Pedestrian(this.scene, xPos, yPos, 'rped1', 3);
+            } else {
+                var rand2 = Phaser.Math.Between(0,2);
+                newObst = new Pedestrian(this.scene, xPos, yPos, this.earthPeds[rand2], 1);
             }
+        } else if(isHell){
+            if(rand == 4){
+                newObst = new Pedestrian(this.scene, xPos, yPos, 'hellrped1', 3);
+            } else {
+                var rand2 = Phaser.Math.Between(0,2);
+                newObst = new Pedestrian(this.scene, xPos, yPos, this.hellPeds[rand2], 1);
+            }
+        } else if(isHeaven){
+            if(rand == 4){
+                newObst = new Pedestrian(this.scene, xPos, yPos, 'heavenrped1', 3);
+            } else {
+                var rand2 = Phaser.Math.Between(0,2);
+                newObst = new Pedestrian(this.scene, xPos, yPos, this.heavenPeds[rand2], 1);
+            }
+        }
         return newObst;
     }
     
