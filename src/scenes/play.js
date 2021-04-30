@@ -82,11 +82,11 @@ class Play extends Phaser.Scene {
 
         // Difficulty Setup
         this.timeElapsed = 0;
-        this.minDiffTime = 15 * 1000;
-        this.maxDiffTime = 60 * 1000;
+        this.minDiffTime = 15 * 1000; // 60 seconds (60,000 milliseconds)
+        this.maxDiffTime = 210 * 1000; // 3 minutes 30 seconds (210,000 milliseconds)
         this.currDiff = 0;
-        this.maxObstIncrease = 400; // FIX THIS (NO MAGIC NUMBERS BRO)
-        this.maxScrollIncrease = 6; // FIX THIS (NO MAGIC NUMBERS BRO)
+        this.maxObstIncrease = 400;
+        this.maxScrollIncrease = this.maxObstIncrease * (3/200); // This ratio makes the tile scroll look accurate
 
         // Add extra keys
         this.keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
@@ -126,6 +126,8 @@ class Play extends Phaser.Scene {
         // update time elapsed and difficulty scale 
         this.timeElapsed += delta; // in miliseconds
         this.currDiff = this.inverseLerp(this.timeElapsed, this.minDiffTime, this.maxDiffTime);
+        if (Phaser.Input.Keyboard.JustDown(this.keyR))
+            console.log(this.currDiff);
         
         if(Math.abs(score) > Math.abs(highScore)) {
             highScore = score;
@@ -175,17 +177,17 @@ class Play extends Phaser.Scene {
 
         // Earth Swap
         if(score > -this.earthBound && score < this.earthBound && !isEarth){
-            console.log("Next stop Earth!");
+            //console.log("Next stop Earth!");
             this.earthSwap();
         }
         // Hell Swap
         if(score <= this.hellBound && !isHell){
-            console.log("Next stop Hell!");
+            //console.log("Next stop Hell!");
             this.hellSwap();
         }
         // Heaven Swap
         if(score >= this.heavenBound && !isHeaven){
-            console.log("Next stop Heaven!");
+            //console.log("Next stop Heaven!");
             this.heavenSwap();
         }
 
@@ -365,14 +367,11 @@ class Play extends Phaser.Scene {
             delay: 2000, // milliseconds
             callback: () => {
                 // make change
-                console.log("This many before: " + this.objects.length);
-                console.log("SWAPPING");
                 this.street.alpha = 0;
                 this.hellStreet.alpha = 0;
                 this.heavenStreet.alpha = 1;
                 this.destroyAll();
                 this.prevLocation = 'Heaven';
-                console.log("This many after: " + this.objects.length);
             },
             callbackScope: this,
         }
