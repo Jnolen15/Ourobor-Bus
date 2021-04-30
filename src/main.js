@@ -49,6 +49,7 @@ let cursors;
 let score = 0;
 let distance = 0;
 let highScore = 0;
+let distHighScore = 0;
 let isEarth = true;
 let isHell = false;
 let isHeaven = false;

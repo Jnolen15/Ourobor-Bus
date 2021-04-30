@@ -166,7 +166,7 @@ class Spawner {
     setPedCollision(bus, busLeft, busRight, pedestrian){
         this.scene.physics.add.overlap(bus, pedestrian, function(bus, pedestrian) {
             //console.log("pedestrian hit!!");
-            score -= pedestrian.value * 2;
+            score -= pedestrian.value;
             pedestrian.destroy();
         });
         this.scene.physics.add.overlap(busLeft, pedestrian, function(busLeft, pedestrian) {

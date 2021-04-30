@@ -72,11 +72,12 @@ class Play extends Phaser.Scene {
                 top: 5,
                 bottom: 5,
             },
-            fixedWidth: 150
+            //fixedWidth: 150
         }
-        this.scoreLeft = this.add.text(10, 10, score + "$", scoreConfig);
-        this.scoreRight = this.add.text(10, 40, distance + "ft.", scoreConfig);
-        this.hsRight = this.add.text(320, 10, "HS: " + highScore + "$", scoreConfig);
+        this.scoreLeft = this.add.text(340, 10, score + "$", scoreConfig);
+        this.scoreRight = this.add.text(340, 40, distance + "ft.", scoreConfig);
+        this.hsRight = this.add.text(10, 40, "HS $: " + highScore + "$", scoreConfig);
+        this.hsRight = this.add.text(10, 10, "HS ft.: " + distHighScore + "ft.", scoreConfig);
 
         // Difficulty Setup
         this.timeElapsed = 0;
@@ -125,8 +126,11 @@ class Play extends Phaser.Scene {
         this.timeElapsed += delta; // in miliseconds
         this.currDiff = this.inverseLerp(this.timeElapsed, this.minDiffTime, this.maxDiffTime);
         
-        if(score > highScore) {
+        if(Math.abs(score) > Math.abs(highScore)) {
             highScore = score;
+        }
+        if(distance > distHighScore) {
+            distHighScore = distance;
         }
 
         // End game check
