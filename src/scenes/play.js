@@ -4,8 +4,9 @@ class Play extends Phaser.Scene {
 
         this.didEndGame = false;
         this.lastScore = 0;
-        this.hellBound = -5;
-        this.heavenBound = 5;
+        this.earthBound = 5;
+        this.hellBound = -10;
+        this.heavenBound = 10;
         this.prevLocation = 'Earth';
     }
 
@@ -173,7 +174,7 @@ class Play extends Phaser.Scene {
         }
 
         // Earth Swap
-        if(score > this.hellBound && score < this.heavenBound && !isEarth){
+        if(score > -this.earthBound && score < this.earthBound && !isEarth){
             console.log("Next stop Earth!");
             this.earthSwap();
         }
