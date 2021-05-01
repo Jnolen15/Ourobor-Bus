@@ -4,6 +4,8 @@ class Menu extends Phaser.Scene {
     }
 
     preload() {
+        // Menu images
+        this.load.image('menuScreen', './assets/menuscreen.png');
         // Add sprites
         this.load.image('blood', './assets/blood.png');
         this.load.image('money', './assets/money.png');
@@ -55,9 +57,9 @@ class Menu extends Phaser.Scene {
         let menuConfig = {
             fontFamily: 'Comic Sans MS	',
             fontSize: '28px',
-            backgroundColor: '#F3B141',
+            backgroundColor: '#b3cfdd',
             color: '#000',
-            align: 'left',
+            align: 'right',
             padding: {
             left: 5,
             right: 5,
@@ -67,11 +69,13 @@ class Menu extends Phaser.Scene {
             fixedWidth: 0
         }
 
+        // show menu image
+        this.add.image(0,0,'menuScreen').setOrigin(0,0);
+
         // show menu text
-        this.add.text(game.config.width/8,game.config.height/4, "Title Screen", menuConfig).setOrigin(0,0);
-        this.add.text(game.config.width/8,game.config.height * .35, "[↑] Start", menuConfig).setOrigin(0,0);
-        this.add.text(game.config.width/8,game.config.height * .45, "[↓] Tutorial", menuConfig).setOrigin(0,0);
-        this.add.text(game.config.width/8,game.config.height * .55, "High Score: " + highScore, menuConfig).setOrigin(0,0);
+        this.add.text(game.config.width * .900, game.config.height * .76, "[↑] Start", menuConfig).setOrigin(1,0);
+        this.add.text(game.config.width * .900, game.config.height * .83, "[↓] Tutorial", menuConfig).setOrigin(1,0);
+        this.add.text(game.config.width * .900, game.config.height * .90, "High Score: " + highScore, menuConfig).setOrigin(1,0);
 
         // define keys
         this.keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
