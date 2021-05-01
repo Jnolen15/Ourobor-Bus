@@ -34,6 +34,10 @@ class Play extends Phaser.Scene {
         this.hellbgm.play();
         this.heavenbgm.play();
         
+        // UI Back
+        this.uiBack = this.add.image(0, 0, 'UI').setOrigin(0,0);
+        this.uiBack.depth = 150;
+
         // Street Background
         this.street = this.add.tileSprite(0,0,480,840, 'street').setOrigin(0,0);
         this.hellStreet = this.add.tileSprite(0,0,480,840, 'hellStreet').setOrigin(0,0);
@@ -66,8 +70,7 @@ class Play extends Phaser.Scene {
         let scoreConfig = {
             fontFamily: 'Courier',
             fontSize: '28px',
-            backgroundColor: '#F3B141',
-            color: '#843605',
+            color: '#F3B141',
             align: 'right',
             padding: {
                 top: 5,
@@ -75,10 +78,14 @@ class Play extends Phaser.Scene {
             },
             //fixedWidth: 150
         }
-        this.scoreLeft = this.add.text(340, 10, score + "$", scoreConfig);
-        this.scoreRight = this.add.text(340, 40, distance + "ft.", scoreConfig);
+        this.scoreLeft = this.add.text(340, 40, score + "$", scoreConfig);
+        this.scoreRight = this.add.text(340, 10, distance + "ft.", scoreConfig);
         this.hsRight = this.add.text(10, 40, "HS $: " + highScore + "$", scoreConfig);
-        this.hsRight = this.add.text(10, 10, "HS ft.: " + distHighScore + "ft.", scoreConfig);
+        this.hsRightdist = this.add.text(10, 10, "HS ft.: " + distHighScore + "ft.", scoreConfig);
+        this.scoreLeft.depth = 200;
+        this.scoreRight.depth = 200;
+        this.hsRight.depth = 200;
+        this.hsRightdist.depth = 200;
 
         // Difficulty Setup
         this.timeElapsed = 0;
@@ -215,6 +222,7 @@ class Play extends Phaser.Scene {
                 });
                 this.sound.play('oHit', { volume: 0.75 });
                 this.cameras.main.shake(500, 0.05);
+                this.destroyAll();
             }
             else{
                 // Play random sound
@@ -250,6 +258,8 @@ class Play extends Phaser.Scene {
             if(Phaser.Input.Keyboard.JustDown(this.keyR)) {
                 score = 0;
                 distance = 0;
+                numPedHit = 0;
+                numPedPicked = 0;
                 gameOver = false;
                 isEarth = true;
                 isHell = false;
@@ -400,19 +410,26 @@ class Play extends Phaser.Scene {
             let endConfig = {
                 fontFamily: 'Courier',
                 fontSize: '28px',
-                backgroundColor: '#F3B141',
-                color: '#843605',
-                align: 'right',
+                color: '#d95763',
+                align: 'center',
                 padding: {
                     top: 5,
                     bottom: 5,
                 },
             }
             
-            this.add.text(game.config.width / 2, game.config.height / 2, 'YOU CRASHED!', endConfig).setOrigin(0.5);
-            this.add.text(game.config.width / 2, game.config.height / 2 + 64, 'CASH MADE: ' + score + "$", endConfig).setOrigin(0.5);
-            this.add.text(game.config.width / 2, game.config.height / 2 + 128, 'DISTANCE TRAVELED: ' + distance + " FEET", endConfig).setOrigin(0.5);
-            this.add.text(game.config.width / 2, game.config.height / 2 + 192, 'R TO RESTART OR M TO MENU', endConfig).setOrigin(0.5);
+            this.uiEnd = this.add.image(40, 150, 'end').setOrigin(0,0);
+            this.uiEnd.depth = 150;
+
+            this.add.text(game.config.width / 2, game.config.height / 2 - 128, 'The Ourobor-Bus', endConfig).setOrigin(0.5).depth = 200;
+            this.add.text(game.config.width / 2, game.config.height / 2 - 100, 'CRASHES!', endConfig).setOrigin(0.5).depth = 200;
+            this.add.text(game.config.width / 2, game.config.height / 2 - 54, 'It hit: ' + numPedHit + ' people', endConfig).setOrigin(0.5).depth = 200;
+            this.add.text(game.config.width / 2, game.config.height / 2 + 10, 'Picked up: ' + numPedPicked + ' people', endConfig).setOrigin(0.5).depth = 200;
+            this.add.text(game.config.width / 2, game.config.height / 2 + 74, 'MADE: ' + score + "$", endConfig).setOrigin(0.5).depth = 200;
+            this.add.text(game.config.width / 2, game.config.height / 2 + 138, 'TRAVELED:' + distance + ' FEET.', endConfig).setOrigin(0.5).depth = 200;
+            this.add.text(game.config.width / 2, game.config.height / 2 + 202, 'R TO RESTART.', endConfig).setOrigin(0.5).depth = 200;
+            this.add.text(game.config.width / 2, game.config.height / 2 + 266, 'M TO RETURN TO MENU.', endConfig).setOrigin(0.5).depth = 200;
+            //this.line1.depth = 200;
         }
     }
 
