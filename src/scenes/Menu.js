@@ -6,6 +6,10 @@ class Menu extends Phaser.Scene {
     preload() {
         // Menu images
         this.load.image('menuScreen', './assets/menuscreen.png');
+        // tutorial images
+        this.load.image('tutor1', './assets/tutorialp1.png');
+        this.load.image('tutor2', './assets/tutorialp2.png');
+        this.load.image('tutor3', './assets/tutorialp3.png');
         // Add sprites
         this.load.image('blood', './assets/blood.png');
         this.load.image('money', './assets/money.png');
@@ -73,9 +77,9 @@ class Menu extends Phaser.Scene {
         this.add.image(0,0,'menuScreen').setOrigin(0,0);
 
         // show menu text
-        this.add.text(game.config.width * .900, game.config.height * .76, "[↑] Start", menuConfig).setOrigin(1,0);
-        this.add.text(game.config.width * .900, game.config.height * .83, "[↓] Tutorial", menuConfig).setOrigin(1,0);
-        this.add.text(game.config.width * .900, game.config.height * .90, "High Score: " + highScore, menuConfig).setOrigin(1,0);
+        this.add.text(game.config.width * .9, game.config.height * .76, "[↑] Start", menuConfig).setOrigin(1,0);
+        this.add.text(game.config.width * .9, game.config.height * .83, "[↓] Tutorial", menuConfig).setOrigin(1,0);
+        this.add.text(game.config.width * .9, game.config.height * .90, "High Score: " + highScore, menuConfig).setOrigin(1,0);
 
         // define keys
         this.keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
