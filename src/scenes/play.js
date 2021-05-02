@@ -34,6 +34,10 @@ class Play extends Phaser.Scene {
         this.hellbgm.play();
         this.heavenbgm.play();
         
+        // UI Back
+        this.uiBack = this.add.image(0, 0, 'UI').setOrigin(0,0);
+        this.uiBack.depth = 150;
+
         // Street Background
         this.street = this.add.tileSprite(0,0,480,840, 'street').setOrigin(0,0);
         this.hellStreet = this.add.tileSprite(0,0,480,840, 'hellStreet').setOrigin(0,0);
@@ -66,8 +70,7 @@ class Play extends Phaser.Scene {
         let scoreConfig = {
             fontFamily: 'Courier',
             fontSize: '28px',
-            backgroundColor: '#F3B141',
-            color: '#843605',
+            color: '#F3B141',
             align: 'right',
             padding: {
                 top: 5,
@@ -75,10 +78,14 @@ class Play extends Phaser.Scene {
             },
             //fixedWidth: 150
         }
-        this.scoreLeft = this.add.text(340, 10, score + "$", scoreConfig);
-        this.scoreRight = this.add.text(340, 40, distance + "ft.", scoreConfig);
+        this.scoreLeft = this.add.text(340, 40, score + "$", scoreConfig);
+        this.scoreRight = this.add.text(340, 10, distance + "ft.", scoreConfig);
         this.hsRight = this.add.text(10, 40, "HS $: " + highScore + "$", scoreConfig);
-        this.hsRight = this.add.text(10, 10, "HS ft.: " + distHighScore + "ft.", scoreConfig);
+        this.hsRightdist = this.add.text(10, 10, "HS ft.: " + distHighScore + "ft.", scoreConfig);
+        this.scoreLeft.depth = 200;
+        this.scoreRight.depth = 200;
+        this.hsRight.depth = 200;
+        this.hsRightdist.depth = 200;
 
         // Difficulty Setup
         this.timeElapsed = 0;
@@ -92,7 +99,7 @@ class Play extends Phaser.Scene {
         this.keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
         this.keyM = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M);
 
-        // Particles
+        // Blood Particles
         let bloodparticleConfig = {
             x: 400,
             y: 300,
@@ -100,13 +107,14 @@ class Play extends Phaser.Scene {
             speed: {min: 20, max: 100},
             scale: {start: 1, end: 0},
             rotate: {start: 360, end: 0},
-            gravityY: 300,
+            gravityY: 800,
             on: false,
         }
         this.bloodParticles = this.add.particles('blood');
+        this.bloodParticles.depth = 200;
         this.bloodemitter = this.bloodParticles.createEmitter(bloodparticleConfig);
 
-        // Particles
+        // Money Particles
         let moneyparticleConfig = {
             x: 400,
             y: 300,
@@ -119,7 +127,25 @@ class Play extends Phaser.Scene {
         }
 
         this.moneyParticles = this.add.particles('money');
+        this.moneyParticles.depth = 200;
         this.moneyemitter = this.moneyParticles.createEmitter(moneyparticleConfig);
+
+        // Tire Particles
+        let tireparticleConfig = {
+            x: 400,
+            y: 300,
+            blendmode: 'ADD',
+            rotate: 0,
+            speed: 0,
+            scale: 0.5,
+            lifespan: 10000,
+            accelerationY: 550,
+            maxVelocityY: 550,
+            //gravityY: 400,
+            on: false,
+        }
+        this.tireParticles = this.add.particles('tiremarks');
+        this.tireemitter = this.tireParticles.createEmitter(tireparticleConfig);
     }
 
     update(time, delta){
@@ -215,6 +241,7 @@ class Play extends Phaser.Scene {
                 });
                 this.sound.play('oHit', { volume: 0.75 });
                 this.cameras.main.shake(500, 0.05);
+                this.destroyAll();
             }
             else{
                 // Play random sound
@@ -245,11 +272,20 @@ class Play extends Phaser.Scene {
             this.lastScore = score;
         }
 
+        // Trie markings particles
+        //if(cursors.left.isDown || cursors.right.isDown){
+        if(this.bus.body.velocity.x > 370 || this.bus.body.velocity.x < -370){
+            this.tireParticles.emitParticleAt(this.bus.x + 70, this.bus.y + 10, 1);
+            this.tireParticles.emitParticleAt(this.bus.x + 10, this.bus.y + 10, 1);
+        }
+
         // check key input for restart
         if (gameOver){
             if(Phaser.Input.Keyboard.JustDown(this.keyR)) {
                 score = 0;
                 distance = 0;
+                numPedHit = 0;
+                numPedPicked = 0;
                 gameOver = false;
                 isEarth = true;
                 isHell = false;
@@ -400,19 +436,26 @@ class Play extends Phaser.Scene {
             let endConfig = {
                 fontFamily: 'Courier',
                 fontSize: '28px',
-                backgroundColor: '#F3B141',
-                color: '#843605',
-                align: 'right',
+                color: '#d95763',
+                align: 'center',
                 padding: {
                     top: 5,
                     bottom: 5,
                 },
             }
             
-            this.add.text(game.config.width / 2, game.config.height / 2, 'YOU CRASHED!', endConfig).setOrigin(0.5);
-            this.add.text(game.config.width / 2, game.config.height / 2 + 64, 'CASH MADE: ' + score + "$", endConfig).setOrigin(0.5);
-            this.add.text(game.config.width / 2, game.config.height / 2 + 128, 'DISTANCE TRAVELED: ' + distance + " FEET", endConfig).setOrigin(0.5);
-            this.add.text(game.config.width / 2, game.config.height / 2 + 192, 'R TO RESTART OR M TO MENU', endConfig).setOrigin(0.5);
+            this.uiEnd = this.add.image(40, 150, 'end').setOrigin(0,0);
+            this.uiEnd.depth = 150;
+
+            this.add.text(game.config.width / 2, game.config.height / 2 - 128, 'The Ourobor-Bus', endConfig).setOrigin(0.5).depth = 200;
+            this.add.text(game.config.width / 2, game.config.height / 2 - 100, 'CRASHES!', endConfig).setOrigin(0.5).depth = 200;
+            this.add.text(game.config.width / 2, game.config.height / 2 - 54, 'It hit: ' + numPedHit + ' people', endConfig).setOrigin(0.5).depth = 200;
+            this.add.text(game.config.width / 2, game.config.height / 2 + 10, 'Picked up: ' + numPedPicked + ' people', endConfig).setOrigin(0.5).depth = 200;
+            this.add.text(game.config.width / 2, game.config.height / 2 + 74, 'MADE: ' + score + "$", endConfig).setOrigin(0.5).depth = 200;
+            this.add.text(game.config.width / 2, game.config.height / 2 + 138, 'TRAVELED: ' + distance + ' FEET.', endConfig).setOrigin(0.5).depth = 200;
+            this.add.text(game.config.width / 2, game.config.height / 2 + 202, 'R TO RESTART.', endConfig).setOrigin(0.5).depth = 200;
+            this.add.text(game.config.width / 2, game.config.height / 2 + 266, 'M TO RETURN TO MENU.', endConfig).setOrigin(0.5).depth = 200;
+            //this.line1.depth = 200;
         }
     }
 

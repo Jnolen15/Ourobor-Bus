@@ -34,7 +34,7 @@ let config = {
     physics: {
         default: 'arcade',
         arcade: {
-            debug: true,
+            //debug: true,
             gravity: {x: 0, y: 0},
         }
     },
@@ -48,6 +48,8 @@ let game = new Phaser.Game(config);
 let cursors;
 let score = 0;
 let distance = 0;
+let numPedHit = 0;
+let numPedPicked = 0;
 let highScore = 0;
 let distHighScore = 0;
 let isEarth = true;
