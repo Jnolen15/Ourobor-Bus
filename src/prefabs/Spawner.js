@@ -181,16 +181,19 @@ class Spawner {
         this.scene.physics.add.overlap(bus, pedestrian, function(bus, pedestrian) {
             //console.log("pedestrian hit!!");
             score -= pedestrian.value;
+            numPedHit += 1;
             pedestrian.destroy();
         });
         this.scene.physics.add.overlap(busLeft, pedestrian, function(busLeft, pedestrian) {
             //console.log("pedestrian picked up!!");
             score += pedestrian.value;
+            numPedPicked += 1;
             pedestrian.destroy();
         });
         this.scene.physics.add.overlap(busRight, pedestrian, function(busRight, pedestrian) {
             //console.log("pedestrian picked up!!");
             score += pedestrian.value;
+            numPedPicked += 1;
             pedestrian.destroy();
         });
     }
