@@ -29,6 +29,16 @@ class Menu extends Phaser.Scene {
         this.load.image('car2', './assets/carsprite_2.png');
         this.load.image('car3', './assets/carsprite_3.png');
         this.load.image('tree', './assets/obstacle_tree.png');
+        this.load.image('busstop', './assets/obstacle_busstop.png');
+        // Hell Obstacles
+        this.load.image('spike', './assets/obstacle_hellspike.png');
+        this.load.image('fire1', './assets/obstacle_fire_frame1.png');
+        this.load.image('fire2', './assets/obstacle_fire_frame2.png');
+        this.load.image('fire3', './assets/obstacle_fire_frame3.png');
+        this.load.image('fire4', './assets/obstacle_fire_frame4.png');
+        // Heaven Obstacles
+        this.load.image('statue', './assets/obstacle_angelstatue.png');
+        this.load.image('fountain', './assets/obstacle_fountain.png');
         // Earth Pedestrians
         this.load.image('ped1', './assets/pedestrian_1.png');
         this.load.image('ped2', './assets/pedestrian_2.png');
