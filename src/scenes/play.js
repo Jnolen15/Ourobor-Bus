@@ -99,7 +99,7 @@ class Play extends Phaser.Scene {
         this.keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
         this.keyM = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M);
 
-        // Particles
+        // Blood Particles
         let bloodparticleConfig = {
             x: 400,
             y: 300,
@@ -107,13 +107,14 @@ class Play extends Phaser.Scene {
             speed: {min: 20, max: 100},
             scale: {start: 1, end: 0},
             rotate: {start: 360, end: 0},
-            gravityY: 300,
+            gravityY: 800,
             on: false,
         }
         this.bloodParticles = this.add.particles('blood');
+        this.bloodParticles.depth = 200;
         this.bloodemitter = this.bloodParticles.createEmitter(bloodparticleConfig);
 
-        // Particles
+        // Money Particles
         let moneyparticleConfig = {
             x: 400,
             y: 300,
@@ -126,7 +127,25 @@ class Play extends Phaser.Scene {
         }
 
         this.moneyParticles = this.add.particles('money');
+        this.moneyParticles.depth = 200;
         this.moneyemitter = this.moneyParticles.createEmitter(moneyparticleConfig);
+
+        // Tire Particles
+        let tireparticleConfig = {
+            x: 400,
+            y: 300,
+            blendmode: 'ADD',
+            rotate: 0,
+            speed: 0,
+            scale: 0.5,
+            lifespan: 10000,
+            accelerationY: 550,
+            maxVelocityY: 550,
+            //gravityY: 400,
+            on: false,
+        }
+        this.tireParticles = this.add.particles('tiremarks');
+        this.tireemitter = this.tireParticles.createEmitter(tireparticleConfig);
     }
 
     update(time, delta){
@@ -251,6 +270,13 @@ class Play extends Phaser.Scene {
             this.moneyParticles.emitParticleAt(this.bus.x + 90, this.bus.y, 5);
             this.moneyParticles.emitParticleAt(this.bus.x - 10, this.bus.y, 5);
             this.lastScore = score;
+        }
+
+        // Trie markings particles
+        //if(cursors.left.isDown || cursors.right.isDown){
+        if(this.bus.body.velocity.x > 370 || this.bus.body.velocity.x < -370){
+            this.tireParticles.emitParticleAt(this.bus.x + 70, this.bus.y + 10, 1);
+            this.tireParticles.emitParticleAt(this.bus.x + 10, this.bus.y + 10, 1);
         }
 
         // check key input for restart
@@ -426,7 +452,7 @@ class Play extends Phaser.Scene {
             this.add.text(game.config.width / 2, game.config.height / 2 - 54, 'It hit: ' + numPedHit + ' people', endConfig).setOrigin(0.5).depth = 200;
             this.add.text(game.config.width / 2, game.config.height / 2 + 10, 'Picked up: ' + numPedPicked + ' people', endConfig).setOrigin(0.5).depth = 200;
             this.add.text(game.config.width / 2, game.config.height / 2 + 74, 'MADE: ' + score + "$", endConfig).setOrigin(0.5).depth = 200;
-            this.add.text(game.config.width / 2, game.config.height / 2 + 138, 'TRAVELED:' + distance + ' FEET.', endConfig).setOrigin(0.5).depth = 200;
+            this.add.text(game.config.width / 2, game.config.height / 2 + 138, 'TRAVELED: ' + distance + ' FEET.', endConfig).setOrigin(0.5).depth = 200;
             this.add.text(game.config.width / 2, game.config.height / 2 + 202, 'R TO RESTART.', endConfig).setOrigin(0.5).depth = 200;
             this.add.text(game.config.width / 2, game.config.height / 2 + 266, 'M TO RETURN TO MENU.', endConfig).setOrigin(0.5).depth = 200;
             //this.line1.depth = 200;

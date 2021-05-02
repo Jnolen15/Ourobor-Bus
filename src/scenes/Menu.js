@@ -9,6 +9,7 @@ class Menu extends Phaser.Scene {
         // Add sprites
         this.load.image('UI', './assets/uiBack.png');
         this.load.image('end', './assets/uiEnd.png');
+        this.load.image('tiremarks', './assets/tiremarks.png');
         this.load.image('blood', './assets/blood.png');
         this.load.image('money', './assets/money.png');
         this.load.image('bus', './assets/BUSsprite.png');
