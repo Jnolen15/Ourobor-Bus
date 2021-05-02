@@ -443,19 +443,26 @@ class Play extends Phaser.Scene {
                     bottom: 5,
                 },
             }
-            
-            this.uiEnd = this.add.image(40, 150, 'end').setOrigin(0,0);
-            this.uiEnd.depth = 150;
 
-            this.add.text(game.config.width / 2, game.config.height / 2 - 128, 'The Ourobor-Bus', endConfig).setOrigin(0.5).depth = 200;
-            this.add.text(game.config.width / 2, game.config.height / 2 - 100, 'CRASHES!', endConfig).setOrigin(0.5).depth = 200;
-            this.add.text(game.config.width / 2, game.config.height / 2 - 54, 'It hit: ' + numPedHit + ' people', endConfig).setOrigin(0.5).depth = 200;
-            this.add.text(game.config.width / 2, game.config.height / 2 + 10, 'Picked up: ' + numPedPicked + ' people', endConfig).setOrigin(0.5).depth = 200;
-            this.add.text(game.config.width / 2, game.config.height / 2 + 74, 'MADE: ' + score + "$", endConfig).setOrigin(0.5).depth = 200;
-            this.add.text(game.config.width / 2, game.config.height / 2 + 138, 'TRAVELED: ' + distance + ' FEET.', endConfig).setOrigin(0.5).depth = 200;
-            this.add.text(game.config.width / 2, game.config.height / 2 + 202, 'R TO RESTART.', endConfig).setOrigin(0.5).depth = 200;
-            this.add.text(game.config.width / 2, game.config.height / 2 + 266, 'M TO RETURN TO MENU.', endConfig).setOrigin(0.5).depth = 200;
-            //this.line1.depth = 200;
+            // Show end screen after a moment
+            let endtimerConfig = {
+                delay: 1000, // milliseconds
+                callback: () => {
+                    this.uiEnd = this.add.image(40, 150, 'end').setOrigin(0,0);
+                    this.uiEnd.depth = 150;
+
+                    this.add.text(game.config.width / 2, game.config.height / 2 - 128, 'The Ourobor-Bus', endConfig).setOrigin(0.5).depth = 200;
+                    this.add.text(game.config.width / 2, game.config.height / 2 - 100, 'CRASHES!', endConfig).setOrigin(0.5).depth = 200;
+                    this.add.text(game.config.width / 2, game.config.height / 2 - 54, 'It hit: ' + numPedHit + ' people', endConfig).setOrigin(0.5).depth = 200;
+                    this.add.text(game.config.width / 2, game.config.height / 2 + 10, 'Picked up: ' + numPedPicked + ' people', endConfig).setOrigin(0.5).depth = 200;
+                    this.add.text(game.config.width / 2, game.config.height / 2 + 74, 'MADE: ' + score + "$", endConfig).setOrigin(0.5).depth = 200;
+                    this.add.text(game.config.width / 2, game.config.height / 2 + 138, 'TRAVELED: ' + distance + ' FEET.', endConfig).setOrigin(0.5).depth = 200;
+                    this.add.text(game.config.width / 2, game.config.height / 2 + 202, 'R TO RESTART.', endConfig).setOrigin(0.5).depth = 200;
+                    this.add.text(game.config.width / 2, game.config.height / 2 + 266, 'M TO RETURN TO MENU.', endConfig).setOrigin(0.5).depth = 200;
+                },
+                callbackScope: this,
+            }
+            this.endTimer = this.time.addEvent(endtimerConfig);
         }
     }
 
