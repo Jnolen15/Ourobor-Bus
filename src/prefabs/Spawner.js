@@ -17,6 +17,10 @@ class Spawner {
         this.xPos4 = 345;
         this.xPos5 = 440;
         // | sprite arrays
+        this.cars = ['car1', 'car2', 'car3'];
+        this.earthObs = ['tree', 'busstop'];
+        this.hellObs = ['spike', 'fire1', 'fire2', 'fire3', 'fire4'];
+        this.heavenObs = ['statue', 'fountain'];
         this.earthPeds = ['ped1', 'ped2', 'ped3'];
         this.hellPeds = ['hellped1', 'hellped2', 'hellped3'];
         this.heavenPeds = ['heavenped1', 'heavenped2', 'heavenped3'];
@@ -122,22 +126,25 @@ class Spawner {
     }
 
     makeObs(xPos, yPos){
-        let chosenSprite;
         let moveSpeed;
+        let newObst;
         if(xPos != 40 && xPos != 440){ // If spawn lane is a road
             moveSpeed = 250;
-            var rand = Phaser.Math.Between(1,3);
-                if(rand == 1)
-                    chosenSprite = 'car1';
-                else if(rand == 2)
-                    chosenSprite = 'car2';
-                else if(rand == 3)
-                    chosenSprite = 'car3';
+            var rand = Phaser.Math.Between(0,2);
+            newObst = new Obstacle(this.scene, xPos, yPos, this.cars[rand], moveSpeed);
         } else { // else spawn lane is a sidewalk
             moveSpeed = 350;
-            chosenSprite = 'tree';
+            if(isEarth){
+                var rand = Phaser.Math.Between(0,1);
+                newObst = new Obstacle(this.scene, xPos, yPos, this.earthObs[rand], moveSpeed);
+            } else if(isHell){
+                var rand = Phaser.Math.Between(0,4);
+                newObst = new Obstacle(this.scene, xPos, yPos, this.hellObs[rand], moveSpeed);
+            } else if(isHeaven){
+                var rand = Phaser.Math.Between(0,1);
+                newObst = new Obstacle(this.scene, xPos, yPos, this.heavenObs[rand], moveSpeed);
+            }
         }
-        let newObst = new Obstacle(this.scene, xPos, yPos, chosenSprite, moveSpeed);
         return newObst;
     }
 
