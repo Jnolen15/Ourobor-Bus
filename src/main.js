@@ -38,7 +38,7 @@ let config = {
             gravity: {x: 0, y: 0},
         }
     },
-    scene: [Menu, Play, Tutorial],
+    scene: [LoadingPrep, Menu, Play, Tutorial],
 }
 
 //define game

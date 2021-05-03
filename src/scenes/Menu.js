@@ -4,6 +4,37 @@ class Menu extends Phaser.Scene {
     }
 
     preload() {
+        // --- Loading Screen Setup
+        // loading-backgroundbox
+        var progBoxWidth = game.config.width * .68;
+        var progBoxHeight = 30;
+        var progressBox = this.add.graphics();
+        progressBox.fillStyle(0x222222, 0.8);
+        progressBox.fillRect(game.config.width*.5 - progBoxWidth*.5, game.config.height*.5 - progBoxHeight*.5, progBoxWidth, progBoxHeight);
+        // progress bar setup
+        var busProgBar = this.add.image(game.config.width / 2,game.config.height / 2,'loadingBar');
+        // loading-text setup
+        var loadingText = this.make.text({
+            x: game.config.width*.5,
+            y: game.config.height*.5 - progBoxHeight - 5,
+            text: 'Loading...',
+            style: {
+                font: '25px Courier',
+                fill: '#b3cfdd'
+            }
+        }).setOrigin(.5);
+        loadingText.setOrigin(0.5, 0.5);
+        // loading-event listeners
+        this.load.on('progress', function (value) {
+            busProgBar.frame.cutWidth = busProgBar.frame.width * value;
+        });            
+        this.load.on('complete', function () {
+            //console.log('complete');
+            progressBox.destroy();
+            loadingText.destroy();
+        });
+
+        // --- Loading data
         // Menu images
         this.load.image('menuScreen', './assets/menuscreen.png');
         // tutorial images
@@ -87,7 +118,7 @@ class Menu extends Phaser.Scene {
         }
 
         // show menu image
-        this.add.image(0,0,'menuScreen').setOrigin(0,0);
+        this.add.image(0, 0,'menuScreen').setOrigin(0,0);
 
         // show menu text
         this.add.text(game.config.width * .9, game.config.height * .76, "[↑] Start", menuConfig).setOrigin(1,0);
