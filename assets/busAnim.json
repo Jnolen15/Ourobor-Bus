@@ -1,1 +1,30 @@
-[{"name":"sprite1","x":0,"y":0,"width":108,"height":124},{"name":"sprite2","x":109,"y":0,"width":84,"height":124},{"name":"sprite3","x":194,"y":0,"width":52,"height":124}]
+{
+    "frames":[
+        {"filename":"bus_spritesheet1.png",
+            "frame":{"x":0,"y":0,"w":108,"h":124},
+            "rotated":false,
+            "trimmed":false,
+            "spriteSourceSize":{"x":0,"y":0,"w":108,"h":124},
+            "sourceSize":{"w":108,"h":124}
+        },
+        {"filename":"bus_spritesheet2.png",
+            "frame":{"x":109,"y":0,"w":84,"h":124},
+            "rotated":false,
+            "trimmed":false,
+            "spriteSourceSize":{"x":0,"y":0,"w":84,"h":124},
+            "sourceSize":{"w":84,"h":124}
+        },
+        {"filename":"bus_spritesheet3.png",
+            "frame":{"x":194,"y":0,"w":52,"h":124},
+            "rotated":false,
+            "trimmed":false,
+            "spriteSourceSize":{"x":0,"y":0,"w":52,"h":124},
+            "sourceSize":{"w":52,"h":124}
+        }
+    ],
+    "meta":{"app":"https://www.leshylabs.com/apps/sstool/",
+        "version":"Leshy SpriteSheet Tool v0.8.4",
+        "image":"spritesheet.png",
+        "size":{"w":246,"h":124},"scale":1
+    }
+}

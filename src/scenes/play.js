@@ -52,6 +52,22 @@ class Play extends Phaser.Scene {
         this.bus = new Bus(this, 220, 760, 'bus').setOrigin(0,0);
         this.bus.setScale(1.5);
 
+        // bus animation config
+        this.anims.create({
+            key: 'busDoorAnim',
+            frameRate: 10,
+            frames: this.anims.generateFrameNames('busAnim', {
+                prefix: 'bus_spritesheet',
+                suffix: ".png",
+                start: 1,
+                end: 3
+            })
+        });
+        this.theBusAnim = this.add.sprite(this.bus.x, this.bus.y, "busAnim", "bus_spritesheet3.png");
+        this.theBusAnim.alpha = 0;
+        this.theBusAnim.depth = 200;
+        this.theBusAnim.setScale(1.5);
+
         // object array (pedestrians and obstacles)
         this.objects = [];
 
@@ -258,6 +274,10 @@ class Play extends Phaser.Scene {
             }
         }
 
+        // Moving the animation with the sprite
+        this.theBusAnim.x = this.bus.x + 39;
+        this.theBusAnim.y = this.bus.y + 93;
+
         // Money particles if score increase
         if(score > this.lastScore){
             var rand = Phaser.Math.Between(1,3);
@@ -269,7 +289,17 @@ class Play extends Phaser.Scene {
                     this.sound.play('pPickup3', { volume: 0.75 });
             this.moneyParticles.emitParticleAt(this.bus.x + 90, this.bus.y, 5);
             this.moneyParticles.emitParticleAt(this.bus.x - 10, this.bus.y, 5);
+            
             this.lastScore = score;
+
+            // Animation
+            this.theBusAnim.alpha = 1;
+            this.bus.alpha = 0;
+            this.theBusAnim.play("busDoorAnim");
+            this.theBusAnim.on('animationcomplete', () => {
+                this.theBusAnim.alpha = 0;
+                this.bus.alpha = 1;
+            });
         }
 
         // Trie markings particles

@@ -42,6 +42,8 @@ class Menu extends Phaser.Scene {
         this.load.image('tutor1', './assets/Tutorial1.png');
         this.load.image('tutor2', './assets/Tutorial2.png');
         this.load.image('tutor3', './assets/Tutorial3.png');
+        // Load atlas
+        this.load.atlas('busAnim', './assets/bus_spritesheet.png', './assets/busAnim.json');
         // Add sprites
         this.load.image('UI', './assets/uiBack.png');
         this.load.image('end', './assets/uiEnd.png');
