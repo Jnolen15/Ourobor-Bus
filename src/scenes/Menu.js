@@ -27,7 +27,7 @@ class Menu extends Phaser.Scene {
         // loading-event listeners
         this.load.on('progress', function (value) {
             busProgBar.frame.cutWidth = busProgBar.frame.width * value;
-            loadingText.setText('Loading - (' + parseInt(value * 100) + '%)');
+            //loadingText.setText('Loading - (' + parseInt(value * 100) + '%)');
         });            
         this.load.on('complete', function () {
             //console.log('complete');
